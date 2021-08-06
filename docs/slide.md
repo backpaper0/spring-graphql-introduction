@@ -803,7 +803,7 @@ List<Example> examples = ...
 List<Edge<Example>> edges = examples.stream().map(example -> {
     ConnectionCursor cursor = new DefaultConnectionCursor(example.getId());
     return new DefaultEdge<>(example, cursor);
-});
+}).collect(Collectors.toList());
 ```
 
 ---
