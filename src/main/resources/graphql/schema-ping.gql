@@ -1,0 +1,22 @@
+extend type Query {
+	ping(notNull: Boolean = true, size: Int = 3): Ping!
+}
+
+type Ping {
+	# T
+	ping1: String
+	# List<T>
+	ping2: [String!]!
+	# Optional
+	ping3: String
+	# Stream
+	ping4: [String!]!
+	# Mono
+	ping5: String
+	# Flux
+	ping6: [String!]!
+	# CompletionStage<T>
+	ping7: String
+	# DataFetcherResult<T>
+	ping8: String
+}

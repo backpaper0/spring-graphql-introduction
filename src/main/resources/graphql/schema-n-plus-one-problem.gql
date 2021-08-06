@@ -1,0 +1,14 @@
+extend type Query {
+	comics: [Comic!]!
+}
+
+type Comic {
+	id: ID!
+	title: String!
+	author(useDataLoader: Boolean! = false): Author!
+}
+
+type Author {
+	id: ID!
+	name: String!
+}

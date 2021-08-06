@@ -1,0 +1,33 @@
+@startuml communication-graphql
+skinparam monochrome true
+skinparam shadowing false
+
+participant クライアント as client
+participant サーバー as server
+database データベース as db
+
+client -> server ++ : リクエストを送信
+    server -> db ++ : Articleを取得
+    return
+    server -> db ++ : Categoryを取得
+    return
+return JSONを返却
+@enduml
+
+@startuml communication-rest
+skinparam monochrome true
+skinparam shadowing false
+
+participant クライアント as client
+participant サーバー as server
+database データベース as db
+
+client -> server ++ : 1回目のリクエストを送信
+    server -> db ++ : Articleを取得
+    return
+return JSONを返却
+client -> server ++ : 2回目のリクエストを送信
+    server -> db ++ : Categoryを取得
+    return
+return JSONを返却
+@enduml

@@ -1,0 +1,13 @@
+extend type Query {
+	errorhandling(exception: ExceptionType! = NONE, handling: Boolean! = false): [MetaVar]!
+}
+
+enum ExceptionType {
+	NONE
+	ROOT
+	METAVAR
+}
+
+type MetaVar {
+	name: String
+}

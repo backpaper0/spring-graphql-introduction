@@ -1,0 +1,34 @@
+commit-test:
+  queries:
+    forward: |-
+      query History($first: Int! = 10, $after: String) {
+        history {
+          forward(first: $first, after: $after) {
+            edges {
+              cursor
+            }
+            pageInfo {
+              hasPreviousPage
+              hasNextPage
+              startCursor
+              endCursor
+            }
+          }
+        }
+      }
+    backward: |-
+      query History($last: Int! = 10, $before: String) {
+        history {
+          backward(last: $last, before: $before) {
+            edges {
+              cursor
+            }
+            pageInfo {
+              hasPreviousPage
+              hasNextPage
+              startCursor
+              endCursor
+            }
+          }
+        }
+      }

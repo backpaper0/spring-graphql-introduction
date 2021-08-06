@@ -1,0 +1,22 @@
+type Article {
+    id: ID!
+    title: String!
+    content: String!
+    category: Category!
+}
+
+type Category {
+    id: ID!
+    name: String!
+}
+
+type Query {
+	article(id: ID!): Article
+	articles: [Article!]!
+	categories: [Category!]!
+}
+
+type Mutation {
+	createCategory(name: String!): Category!
+	createArticle(title: String!, content: String!, categoryId: ID!): Article!
+}

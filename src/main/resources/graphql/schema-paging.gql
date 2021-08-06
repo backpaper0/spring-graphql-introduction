@@ -1,0 +1,31 @@
+extend type Query {
+	history: History!
+}
+
+type History {
+	forward(first: Int! = 10, after: String): CommitConnection!
+	backward(last: Int! = 10, before: String): CommitConnection!
+}
+
+type Commit {
+	id: ID!
+	hash: String!
+	message: String!
+}
+
+type CommitEdge {
+	node: Commit!
+	cursor: String!
+}
+
+type PageInfo {
+	hasPreviousPage: Boolean!
+	hasNextPage: Boolean!
+	startCursor: String
+	endCursor: String
+}
+
+type CommitConnection {
+	edges: [CommitEdge!]!
+	pageInfo: PageInfo!
+}

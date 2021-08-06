@@ -1,0 +1,15 @@
+extend type Query {
+	ghRepo: GitHubRepository
+}
+
+type GitHubRepository {
+	uri: URI!
+	visibility: Visibility!
+}
+
+scalar URI
+
+enum Visibility {
+	PUBLIC
+	PRIVATE
+}
