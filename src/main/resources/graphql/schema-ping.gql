@@ -3,20 +3,20 @@ extend type Query {
 }
 
 type Ping {
-	# T
+	"任意の型T"
 	ping1: String
-	# List<T>
+	"List<T>"
 	ping2: [String!]!
-	# Optional
+	"Optional<T>"
 	ping3: String
-	# Stream
+	"Stream<T>"
 	ping4: [String!]!
-	# Mono
+	"Mono<T>"
 	ping5: String
-	# Flux
+	"Flux<T>"
 	ping6: [String!]!
-	# CompletionStage<T>
+	"CompletionStage<T>"
 	ping7: String
-	# DataFetcherResult<T>
+	"DataFetcherResult<T>"
 	ping8: String
 }
