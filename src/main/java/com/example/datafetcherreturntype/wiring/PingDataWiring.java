@@ -26,23 +26,47 @@ public class PingDataWiring implements RuntimeWiringBuilderCustomizer {
 			return new Ping(notNull, size);
 		}));
 
-		paramBuilder.type("Ping", b -> b.dataFetcher("ping1", single(notNull -> {
-			return notNull ? "pong" : null;
-		})).dataFetcher("ping2", multiple(size -> {
-			return Collections.nCopies(size, "pong");
-		})).dataFetcher("ping3", single(notNull -> {
-			return Optional.of("pong").filter(a -> notNull);
-		})).dataFetcher("ping4", multiple(size -> {
-			return Collections.nCopies(size, "pong").stream();
-		})).dataFetcher("ping5", single(notNull -> {
-			return Mono.just("pong").filter(a -> notNull);
-		})).dataFetcher("ping6", multiple(size -> {
-			return Flux.fromIterable(Collections.nCopies(size, "pong"));
-		})).dataFetcher("ping7", single(notNull -> {
-			return CompletableFuture.completedStage(notNull ? "pong" : null);
-		})).dataFetcher("ping8", single(notNull -> {
-			return DataFetcherResult.newResult().data(notNull ? "pong" : null).build();
-		})));
+		paramBuilder.type("Ping", b -> b
+
+				// 任意の型
+				.dataFetcher("ping1", single(notNull -> {
+					return notNull ? "pong" : null;
+				}))
+
+				// List
+				.dataFetcher("ping2", multiple(size -> {
+					return Collections.nCopies(size, "pong");
+				}))
+
+				// Optional
+				.dataFetcher("ping3", single(notNull -> {
+					return Optional.of("pong").filter(a -> notNull);
+				}))
+
+				// Stream
+				.dataFetcher("ping4", multiple(size -> {
+					return Collections.nCopies(size, "pong").stream();
+				}))
+
+				// Mono
+				.dataFetcher("ping5", single(notNull -> {
+					return Mono.just("pong").filter(a -> notNull);
+				}))
+
+				//Flux
+				.dataFetcher("ping6", multiple(size -> {
+					return Flux.fromIterable(Collections.nCopies(size, "pong"));
+				}))
+
+				// CompletionStage
+				.dataFetcher("ping7", single(notNull -> {
+					return CompletableFuture.completedStage(notNull ? "pong" : null);
+				}))
+
+				// graphql.execution.DataFetcherResult
+				.dataFetcher("ping8", single(notNull -> {
+					return DataFetcherResult.newResult().data(notNull ? "pong" : null).build();
+				})));
 	}
 
 	private static <T> DataFetcher<T> single(Function<Boolean, T> f) {
