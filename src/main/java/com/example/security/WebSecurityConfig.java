@@ -13,7 +13,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
 				.antMatchers("/graphql/**").permitAll()
-				.antMatchers("/graphiql/**").permitAll()
+				.antMatchers("/my-graphiql/**").permitAll()
 				.anyRequest().authenticated()
 
 				.and().httpBasic()
