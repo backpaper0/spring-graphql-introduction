@@ -23,6 +23,7 @@ public class SecurityDataWiring implements RuntimeWiringBuilderCustomizer {
 				.dataFetcher("public", env -> service.doPublic())
 				.dataFetcher("protected", env -> service.doProtected())
 				.dataFetcher("roleFoo", env -> service.roleFoo())
-				.dataFetcher("roleBarBaz", env -> service.roleBarBaz()));
+				.dataFetcher("roleBarBaz", env -> service.roleBarBaz())
+				.dataFetcher("protected2", env -> service.protected2()));
 	}
 }

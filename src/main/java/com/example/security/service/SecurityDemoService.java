@@ -32,4 +32,10 @@ public class SecurityDemoService {
 	public String roleBarBaz() {
 		return "barbaz";
 	}
+
+	public String protected2() {
+		SecurityContext context = SecurityContextHolder.getContext();
+		Authentication authentication = context.getAuthentication();
+		return "PROTECTED2: " + authentication.getName();
+	}
 }

@@ -244,6 +244,41 @@ query GitCommits {
 }
 ```
 
+### WIP: 認証・認可
+
+次のクエリーを実行するとエラー(`Unauthorized`)になる。
+
+```gql
+{
+  security {
+    protected
+  }
+}
+```
+
+REQUEST HEADERSという場所に次のJSONを書いて実行するとエラーにならず値が返ってくる。
+
+```json
+{
+  "Authorization": "Basic ZGVtbzpzZWNyZXQ="
+}
+```
+
+これは該当の`DataFetcher`内で呼び出されているコンポーネントのメソッドに`@PreAuthorize("isAuthenticated()")`を付けている。
+
+カスタム`directive`で認証を表現した例も作ってみた。
+次のクエリーが`@authenticated`というカスタム`directive`で保護したフィールドへのアクセスとなる。
+
+```gql
+{
+  security {
+    protected2
+  }
+}
+```
+
+`Authorization`ヘッダーの有無による違いを試してみてほしい。
+
 ### メトリクス
 
 ```

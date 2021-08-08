@@ -8,4 +8,7 @@ type SecurityDemo {
 	protected: String
 	roleFoo: String
 	roleBarBaz: String
+	protected2: String @authenticated
 }
+
+directive @authenticated on FIELD_DEFINITION
