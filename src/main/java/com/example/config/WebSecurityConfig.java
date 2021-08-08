@@ -12,15 +12,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests()
-				.antMatchers("/graphql/**").permitAll()
-				.antMatchers("/my-graphiql/**").permitAll()
-				.anyRequest().authenticated()
+		http
+				.authorizeRequests(authorizeRequests -> authorizeRequests
+						// GraphQLエンドポイントはpermitAllにしておいて他の仕組みで認可制御を行う
+						.antMatchers("/graphql").permitAll()
+						.antMatchers("/my-graphiql/**").permitAll()
+						.anyRequest().authenticated())
 
-				.and().httpBasic()
+				.httpBasic().and()
 
-				.and().csrf().disable()
+				.csrf(csrf -> csrf.ignoringAntMatchers("/graphql"))
 
-				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+				.sessionManagement(
+						sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 	}
 }

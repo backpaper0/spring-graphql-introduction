@@ -17,6 +17,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
 	@Override
 	public void addCorsMappings(CorsRegistry registry) {
+		// npm startでGraphiQLを動かした時にクエリーを実行できるようCORSの設定をする
 		registry.addMapping(graphQlProperties.getPath())
 				.allowCredentials(true)
 				.allowedHeaders("*")
@@ -26,6 +27,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
 	@Override
 	public void addViewControllers(ViewControllerRegistry registry) {
+		// 利便性のためにわざわざ /index.html まで書かなくても良いようにしておく
 		String path = "/my-graphiql";
 		registry.addViewController(path).setViewName(path + "/index.html");
 		registry.addViewController(path + "/").setViewName(path + "/index.html");
