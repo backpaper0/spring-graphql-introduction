@@ -29,3 +29,19 @@ type CommitConnection {
 	edges: [CommitEdge!]!
 	pageInfo: PageInfo!
 }
+
+
+
+extend type Query {
+	prefectures(first: Int, after: String, last: Int, before: String): PrefecturesConnection!
+}
+
+type PrefecturesConnection {
+	edges: [PrefecturesEdge!]!
+	pageInfo: PageInfo!
+}
+
+type PrefecturesEdge {
+	node: String!
+	cursor: String!
+}
