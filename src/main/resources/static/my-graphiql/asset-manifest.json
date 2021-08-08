@@ -1,0 +1,20 @@
+{
+  "files": {
+    "main.js": "/my-graphiql/static/js/main.03872774.chunk.js",
+    "main.js.map": "/my-graphiql/static/js/main.03872774.chunk.js.map",
+    "runtime-main.js": "/my-graphiql/static/js/runtime-main.2caed6e3.js",
+    "runtime-main.js.map": "/my-graphiql/static/js/runtime-main.2caed6e3.js.map",
+    "static/css/2.7b93484a.chunk.css": "/my-graphiql/static/css/2.7b93484a.chunk.css",
+    "static/js/2.b2adf450.chunk.js": "/my-graphiql/static/js/2.b2adf450.chunk.js",
+    "static/js/2.b2adf450.chunk.js.map": "/my-graphiql/static/js/2.b2adf450.chunk.js.map",
+    "index.html": "/my-graphiql/index.html",
+    "static/css/2.7b93484a.chunk.css.map": "/my-graphiql/static/css/2.7b93484a.chunk.css.map",
+    "static/js/2.b2adf450.chunk.js.LICENSE.txt": "/my-graphiql/static/js/2.b2adf450.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.2caed6e3.js",
+    "static/css/2.7b93484a.chunk.css",
+    "static/js/2.b2adf450.chunk.js",
+    "static/js/main.03872774.chunk.js"
+  ]
+}

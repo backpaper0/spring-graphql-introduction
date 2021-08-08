@@ -30,7 +30,23 @@ npx @marp-team/marp-cli@latest --html --output docs/index.html docs/slide.md
 ./mvnw spring-boot:run
 ```
 
-ブラウザで http://localhost:8080/graphiql を開く。
+ブラウザで http://localhost:8080/my-graphiql を開く。
+
+#### ※GraphiQLについて
+
+Spring GraphQLにビルトインされているGraphiQLは認証と`subscription`操作に対応していないため独自に調整したGraphiQLを用意している。
+
+ソースコードは`my-graphiql`にある。
+
+`create-react-app`で作ったReactアプリケーションとなっていて、カスタマイズしたい場合はまず`npm install`で依存ライブラリを準備する。
+
+それから`npm start`で起動する。
+カスタマイズ中はこちらで動作確認しながら開発を進めると良い。
+なお、このためにSpring Bootアプリケーション側でCORSの設定を入れている。
+
+Spring Bootアプリケーションに組み込むには、まずSpring Bootアプリケーション側の`src/main/resources/static/my-graphiql`を削除する。
+それから`npm run build`を実施すると`src/main/resources/static/my-graphiql`にビルドされたHTMLやJSファイルが書き出される。
+あとは`mvn spring-boot:run`をすれば良い。
 
 ### query操作
 
@@ -84,7 +100,17 @@ curl -s http://localhost:8080/graphql -H "Content-Type: application/json" -d '{"
 
 ### subscription
 
-Spring GraphQLに組み込まれているGraphiQLは`subscription`へ対応していないようなので`wscat`で確認してみる。
+`subscription`操作も試してみる。
+
+```gql
+subscription {
+  count
+}
+```
+
+結果のエリアにカウントアップされて1から10まで表示される。
+
+`wscat`でも確認してみる。
 `wscat`は`npm install -g wscat`でインストールできる。
 
 ```

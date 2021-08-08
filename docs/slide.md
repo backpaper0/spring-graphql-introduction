@@ -392,6 +392,19 @@ GraphiQLというGraphQLのGUIクライアントを有効化する
 spring.graphql.graphiql.enabled=true
 ```
 
+※なお、デフォルトで有効化されているので実際には明示的に設定する必要はない
+
+---
+
+### Spring GraphQLに組み込まれたGraphiQLについて
+
+現時点では次の制約がある
+
+- 認証に対応していない(`Authorization`ヘッダを設定できない、Cookieが送信されない)
+- `subscription`操作に対応していない
+
+そのため、コード例には独自にカスタマイズしたGraphiQLを用意している
+
 ---
 
 <!-- _class: lead -->
