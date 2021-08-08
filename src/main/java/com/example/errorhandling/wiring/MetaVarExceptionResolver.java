@@ -18,9 +18,9 @@ public class MetaVarExceptionResolver implements DataFetcherExceptionResolver {
 	public Mono<List<GraphQLError>> resolveException(Throwable exception, DataFetchingEnvironment environment) {
 		GraphQLContext context = environment.getContext();
 		if (context != null) {
-			boolean handling = context.get("handling");
+			Boolean handling = context.get("handling");
 
-			if (handling) {
+			if (Boolean.TRUE.equals(handling)) {
 				GraphQLError error = GraphqlErrorBuilder.newError(environment)
 						.message("Handled: %s", exception.getMessage()).build();
 				List<GraphQLError> errors = List.of(error);
