@@ -1,5 +1,6 @@
 package com.example.security.service;
 
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
@@ -20,5 +21,15 @@ public class SecurityDemoService {
 		SecurityContext context = SecurityContextHolder.getContext();
 		Authentication authentication = context.getAuthentication();
 		return "PROTECTED: " + authentication.getName();
+	}
+
+	@Secured("ROLE_FOO")
+	public String roleFoo() {
+		return "foo";
+	}
+
+	@Secured({ "ROLE_BAR", "ROLE_BAZ" })
+	public String roleBarBaz() {
+		return "barbaz";
 	}
 }

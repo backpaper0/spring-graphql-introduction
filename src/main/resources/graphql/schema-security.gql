@@ -6,4 +6,6 @@ extend type Query {
 type SecurityDemo {
 	public: String
 	protected: String
+	roleFoo: String
+	roleBarBaz: String
 }

@@ -31,8 +31,20 @@ public class SecurityTest {
 			+ "  }"
 			+ "}";
 
+	private static final String ROLE_FOO_QUERY = "{"
+			+ "  security {"
+			+ "    roleFoo"
+			+ "  }"
+			+ "}";
+
+	private static final String ROLE_BARBAZ_QUERY = "{"
+			+ "  security {"
+			+ "    roleBarBaz"
+			+ "  }"
+			+ "}";
+
 	@Test
-	void publicNotAuthenticated() throws Exception {
+	void publicNotAuthenticated() {
 		graphQlTester.query(PUBLIC_QUERY)
 				.execute()
 
@@ -43,7 +55,7 @@ public class SecurityTest {
 
 	@Test
 	@WithMockUser(username = "foobar")
-	void publicAuthenticated() throws Exception {
+	void publicAuthenticated() {
 		graphQlTester.query(PUBLIC_QUERY)
 				.execute()
 
@@ -53,7 +65,7 @@ public class SecurityTest {
 	}
 
 	@Test
-	void protectedNotAuthenticated() throws Exception {
+	void protectedNotAuthenticated() {
 		graphQlTester.query(PROTECTED_QUERY)
 				.execute()
 
@@ -65,12 +77,70 @@ public class SecurityTest {
 
 	@Test
 	@WithMockUser(username = "foobar")
-	void protectedAuthenticated() throws Exception {
+	void protectedAuthenticated() {
 		graphQlTester.query(PROTECTED_QUERY)
 				.execute()
 
 				.path("security.protected")
 				.entity(String.class)
 				.isEqualTo("PROTECTED: foobar");
+	}
+
+	@Test
+	@WithMockUser(username = "demo", roles = { "FOO" })
+	void roleFoo() {
+		graphQlTester.query(ROLE_FOO_QUERY)
+				.execute()
+
+				.path("security.roleFoo")
+				.entity(String.class)
+				.isEqualTo("foo");
+	}
+
+	@Test
+	@WithMockUser(username = "demo", roles = { "BAR", "BAZ" })
+	void roleFoo2() {
+		graphQlTester.query(ROLE_FOO_QUERY)
+				.execute()
+
+				.errors()
+				.filter(error -> error.getPath().equals(List.of("security", "roleFoo"))
+						&& error.getErrorType().equals(ErrorType.UNAUTHORIZED))
+				.verify();
+	}
+
+	@Test
+	@WithMockUser(username = "demo", roles = { "BAR", "BAZ" })
+	void roleBarBaz1() {
+		graphQlTester.query(ROLE_BARBAZ_QUERY)
+				.execute()
+
+				.path("security.roleBarBaz")
+				.entity(String.class)
+				.isEqualTo("barbaz");
+	}
+
+	@Test
+	@WithMockUser(username = "demo", roles = { "FOO", "BAR" })
+	void roleBarBaz2() {
+		graphQlTester.query(ROLE_BARBAZ_QUERY)
+				.execute()
+
+				.errors()
+				.filter(error -> error.getPath().equals(List.of("security", "roleBarBaz"))
+						&& error.getErrorType().equals(ErrorType.UNAUTHORIZED))
+				.verify();
+	}
+
+	@Test
+	@WithMockUser(username = "demo", roles = { "BAZ", "QUX" })
+	void roleBarBaz3() {
+		graphQlTester.query(ROLE_BARBAZ_QUERY)
+				.execute()
+
+				.errors()
+				.filter(error -> error.getPath().equals(List.of("security", "roleBarBaz"))
+						&& error.getErrorType().equals(ErrorType.UNAUTHORIZED))
+				.verify();
 	}
 }
