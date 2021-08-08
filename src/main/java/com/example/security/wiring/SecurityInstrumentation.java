@@ -20,18 +20,19 @@ public class SecurityInstrumentation extends SimpleInstrumentation {
 	@Override
 	public DataFetcher<?> instrumentDataFetcher(DataFetcher<?> dataFetcher,
 			InstrumentationFieldFetchParameters parameters) {
-		return env -> {
 
-			if (env.getFieldDefinition().getDirective("authenticated") != null) {
+		if (parameters.getEnvironment().getFieldDefinition().getDirective("authenticated") != null) {
+			return env -> {
 				SecurityContext securityContext = SecurityContextHolder.getContext();
 				Authentication authentication = securityContext.getAuthentication();
 				if (authentication.isAuthenticated() == false
 						|| authenticationTrustResolver.isAnonymous(authentication)) {
 					throw new AuthenticationCredentialsNotFoundException("User is not Authenticated");
 				}
-			}
+				return dataFetcher.get(env);
+			};
+		}
 
-			return dataFetcher.get(env);
-		};
+		return dataFetcher;
 	}
 }
