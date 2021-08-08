@@ -23,7 +23,7 @@ const fetcher = createGraphiQLFetcher({
 
 function App() {
   return (
-    <GraphiQL fetcher={fetcher} defaultSecondaryEditorOpen={true} headerEditorEnabled={true} />
+    <GraphiQL fetcher={fetcher} defaultSecondaryEditorOpen={true} headerEditorEnabled={true} shouldPersistHeaders={true} />
   );
 }
 

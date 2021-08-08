@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.js": "/my-graphiql/static/js/main.545c84e2.chunk.js",
-    "main.js.map": "/my-graphiql/static/js/main.545c84e2.chunk.js.map",
+    "main.js": "/my-graphiql/static/js/main.16eee798.chunk.js",
+    "main.js.map": "/my-graphiql/static/js/main.16eee798.chunk.js.map",
     "runtime-main.js": "/my-graphiql/static/js/runtime-main.2caed6e3.js",
     "runtime-main.js.map": "/my-graphiql/static/js/runtime-main.2caed6e3.js.map",
     "static/css/2.7b93484a.chunk.css": "/my-graphiql/static/css/2.7b93484a.chunk.css",
@@ -15,6 +15,6 @@
     "static/js/runtime-main.2caed6e3.js",
     "static/css/2.7b93484a.chunk.css",
     "static/js/2.b2adf450.chunk.js",
-    "static/js/main.545c84e2.chunk.js"
+    "static/js/main.16eee798.chunk.js"
   ]
 }
