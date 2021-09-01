@@ -1,6 +1,6 @@
 package com.example.base.wiring;
 
-import org.springframework.graphql.boot.RuntimeWiringBuilderCustomizer;
+import org.springframework.graphql.execution.RuntimeWiringConfigurer;
 import org.springframework.stereotype.Component;
 
 import com.example.base.entity.Article;
@@ -11,7 +11,7 @@ import com.example.base.repository.CategoryRepository;
 import graphql.schema.idl.RuntimeWiring;
 
 @Component
-public class BlogDataWiring implements RuntimeWiringBuilderCustomizer {
+public class BlogDataWiring implements RuntimeWiringConfigurer {
 
 	private final ArticleRepository articleRepository;
 	private final CategoryRepository categoryRepository;
@@ -23,7 +23,7 @@ public class BlogDataWiring implements RuntimeWiringBuilderCustomizer {
 	}
 
 	@Override
-	public void customize(RuntimeWiring.Builder paramBuilder) {
+	public void configure(RuntimeWiring.Builder paramBuilder) {
 		paramBuilder.type("Query", b -> b.dataFetcher("article", env -> {
 			Integer id = Integer.valueOf(env.getArgument("id"));
 			return articleRepository.findById(id);

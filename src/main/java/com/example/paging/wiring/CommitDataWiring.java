@@ -10,7 +10,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Root;
 
-import org.springframework.graphql.boot.RuntimeWiringBuilderCustomizer;
+import org.springframework.graphql.execution.RuntimeWiringConfigurer;
 import org.springframework.stereotype.Component;
 
 import com.example.paging.entity.Commit;
@@ -27,7 +27,7 @@ import graphql.schema.DataFetcher;
 import graphql.schema.idl.RuntimeWiring;
 
 @Component
-public class CommitDataWiring implements RuntimeWiringBuilderCustomizer {
+public class CommitDataWiring implements RuntimeWiringConfigurer {
 
 	private final EntityManager em;
 
@@ -36,7 +36,7 @@ public class CommitDataWiring implements RuntimeWiringBuilderCustomizer {
 	}
 
 	@Override
-	public void customize(RuntimeWiring.Builder paramBuilder) {
+	public void configure(RuntimeWiring.Builder paramBuilder) {
 		paramBuilder.type("Query", b -> b.dataFetcher("history", env -> new Object()));
 
 		paramBuilder.type("History", b -> b

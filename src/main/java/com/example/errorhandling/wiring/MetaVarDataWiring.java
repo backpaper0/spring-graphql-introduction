@@ -3,17 +3,17 @@ package com.example.errorhandling.wiring;
 import java.util.List;
 import java.util.Set;
 
-import org.springframework.graphql.boot.RuntimeWiringBuilderCustomizer;
+import org.springframework.graphql.execution.RuntimeWiringConfigurer;
 import org.springframework.stereotype.Component;
 
 import graphql.GraphQLContext;
 import graphql.schema.idl.RuntimeWiring;
 
 @Component
-public class MetaVarDataWiring implements RuntimeWiringBuilderCustomizer {
+public class MetaVarDataWiring implements RuntimeWiringConfigurer {
 
 	@Override
-	public void customize(RuntimeWiring.Builder paramBuilder) {
+	public void configure(RuntimeWiring.Builder paramBuilder) {
 		paramBuilder.type("Query", b -> b.dataFetcher("errorhandling", env -> {
 			GraphQLContext context = env.getContext();
 			boolean handling = env.getArgument("handling");

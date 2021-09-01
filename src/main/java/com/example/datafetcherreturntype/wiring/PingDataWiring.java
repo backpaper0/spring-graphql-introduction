@@ -6,7 +6,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 import java.util.function.IntFunction;
 
-import org.springframework.graphql.boot.RuntimeWiringBuilderCustomizer;
+import org.springframework.graphql.execution.RuntimeWiringConfigurer;
 import org.springframework.stereotype.Component;
 
 import graphql.execution.DataFetcherResult;
@@ -16,10 +16,10 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Component
-public class PingDataWiring implements RuntimeWiringBuilderCustomizer {
+public class PingDataWiring implements RuntimeWiringConfigurer {
 
 	@Override
-	public void customize(RuntimeWiring.Builder paramBuilder) {
+	public void configure(RuntimeWiring.Builder paramBuilder) {
 		paramBuilder.type("Query", b -> b.dataFetcher("ping", env -> {
 			boolean notNull = env.getArgument("notNull");
 			int size = env.getArgument("size");

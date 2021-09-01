@@ -2,7 +2,7 @@ package com.example.scalarenum.wiring;
 
 import java.net.URI;
 
-import org.springframework.graphql.boot.RuntimeWiringBuilderCustomizer;
+import org.springframework.graphql.execution.RuntimeWiringConfigurer;
 import org.springframework.stereotype.Component;
 
 import com.example.scalarenum.entity.GitHubRepository;
@@ -15,10 +15,10 @@ import graphql.schema.idl.NaturalEnumValuesProvider;
 import graphql.schema.idl.RuntimeWiring;
 
 @Component
-public class ScalarEnumDataWiring implements RuntimeWiringBuilderCustomizer {
+public class ScalarEnumDataWiring implements RuntimeWiringConfigurer {
 
 	@Override
-	public void customize(RuntimeWiring.Builder paramBuilder) {
+	public void configure(RuntimeWiring.Builder paramBuilder) {
 
 		Coercing<?, ?> coercing = new URICoercing();
 		GraphQLScalarType scalarType = GraphQLScalarType.newScalar().name("URI").coercing(coercing).build();
