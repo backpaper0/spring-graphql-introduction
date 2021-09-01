@@ -1,0 +1,17 @@
+extend type Query {
+	playlist(id: Int!): Playlist
+}
+
+type Playlist {
+	name: String!
+	songs: [Song!]!
+}
+
+type Song {
+	title: String!
+	singer: Singer!
+}
+
+type Singer {
+	name: String!
+}
