@@ -1,6 +1,7 @@
-package com.example.dataloader.wiring;
+package com.example.dataloader.dataloader;
 
 import org.dataloader.DataLoader;
+import org.dataloader.DataLoaderFactory;
 import org.dataloader.DataLoaderOptions;
 import org.dataloader.DataLoaderRegistry;
 import org.springframework.graphql.web.WebGraphQlHandler;
@@ -34,7 +35,7 @@ public class AuthorLoaderRegistration implements WebInterceptor {
 			DataLoaderOptions options = DataLoaderOptions.newOptions()
 			//					.setMaxBatchSize(3)
 			;
-			DataLoader<Integer, Author> dataLoader = DataLoader.newDataLoader(authorLoader, options);
+			DataLoader<Integer, Author> dataLoader = DataLoaderFactory.newDataLoader(authorLoader, options);
 			registry.register("authorLoader", dataLoader);
 
 			return builder.dataLoaderRegistry(registry).build();

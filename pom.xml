@@ -62,7 +62,7 @@
 		<dependency>
 			<groupId>org.springframework.graphql</groupId>
 			<artifactId>spring-graphql-test</artifactId>
-			<version>1.0.0-M1</version>
+			<version>1.0.0-M2</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>

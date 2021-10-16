@@ -1,4 +1,4 @@
-package com.example.dataloader.wiring;
+package com.example.dataloader.dataloader;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
