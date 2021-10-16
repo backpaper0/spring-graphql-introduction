@@ -25,24 +25,16 @@ theme: gaia
 
 ## 概要
 
-- [Spring GraphQL](https://github.com/spring-projects/spring-graphql)のマイルストーンバージョンが発表された
+- [Spring GraphQL](https://github.com/spring-projects/spring-graphql)のマイルストーンバージョンが発表された(現在はM2)
 - GraphQLは良いものだと思うので、みなさんにもSpring GraphQLを知ってもらいたい！
 - まずGraphQLについて簡単に説明
 - それからSpring GraphQLを使ったサーバー側の実装方法を説明
 
 ---
 
-## 自己紹介
-
-- うらがみ ([@backpaper0](https://github.com/backpaper0))
-- TIS株式会社
-- 仕事でGraphQL使っていないし、素振りもこれから
-
----
-
 ## 前置き
 
-- この発表はSpring GraphQL 1.0.0-M1をもとにしています
+- この発表はSpring GraphQL 1.0.0-M2をもとにしています
 - GraphQLの仕様はCurrent Working Draftを参考にしています
 - スライドに現れるコードは説明のため一部省略していることがあります
 
@@ -313,6 +305,7 @@ REST
 ## Spring GraphQLとは
 
 - SpringアプリケーションでGraphQLのサーバー側を実装できる
+- そのうちクライアント側も実装できるようになるはず
 - Spring Web MVCとSpring WebFluxの両方に対応
 - [GraphQL Java](https://github.com/graphql-java/graphql-java)を使用している
 - Spring Boot Starterが用意されている
@@ -332,7 +325,7 @@ REST
 <dependency>
     <groupId>org.springframework.experimental</groupId>
     <artifactId>graphql-spring-boot-starter</artifactId>
-    <version>1.0.0-M1</version>
+    <version>1.0.0-M2</version>
 </dependency>
 <!-- もしくは spring-boot-starter-webflux -->
 <dependency>
@@ -360,7 +353,7 @@ REST
 <dependency>
     <groupId>org.springframework.graphql</groupId>
     <artifactId>spring-graphql-test</artifactId>
-    <version>1.0.0-M1</version>
+    <version>1.0.0-M2</version>
     <scope>test</scope>
 </dependency>
 <!-- WebTestClient のため必要になるっぽい -->
@@ -417,27 +410,25 @@ spring.graphql.graphiql.enabled=true
 
 やることは次の通り。
 
-- `org.springframework.graphql.boot.RuntimeWiringBuilderCustomizer`を実装したコンポーネントを用意する
-- `customize`メソッドで引数の`graphql.schema.idl.RuntimeWiring.Builder`を使用してデータのフェッチ方法を定義する
+- `@Controller`を付与したコンポーネントを用意する(Spring Web MVCのコントローラーと同じ)
+- `@QueryMapping`/`@MutationMapping`/`@SubscriptionMapping`/`@SchemaMapping`を付与したメソッドでデータのフェッチ方法を定義する
 
 ---
 
 ## データのフェッチ方法を定義する
 
 ```java
-@Component
-public class ArticleDataWriring implements RuntimeWiringBuilderCustomizer {
+@Controller
+public class BlogController {
 
-    @Override
-    public void customize(RuntimeWiring.Builder builder) {
-        builder.type("Query", b -> b.dataFetcher("article", env -> {
-            Integer id = Integer.valueOf(env.getArgument("id"));
-            return articleRepository.findById(id);
-        }));
-        builder.type("Article", b -> b.dataFetcher("category", env -> {
-            Article article = env.getSource();
-            return categoryRepository.findById(article.getCategoryId());
-        }));
+    @QueryMapping
+    public Optional<Article> article(@Argument Integer id) {
+        return articleRepository.findById(id);
+    }
+
+    @SchemaMapping
+    public Category category(Article article) {
+        return article.getCategory();
     }
 }
 ```
@@ -472,18 +463,7 @@ type Query {
 
 ---
 
-## DataFetcher.getの戻り値の型
-
-```java
-public interface DataFetcher<T> {
-
-    T get(DataFetchingEnvironment environment) throws Exception;
-}
-```
-
----
-
-## DataFetcher.getの戻り値の型
+## メソッドの戻り値の型
 
 - `T`
 - `java.util.Optional<T>`
@@ -644,7 +624,7 @@ public class AuthorLoaderRegistration implements WebInterceptor {
     public Mono<WebOutput> intercept(WebInput webInput, WebGraphQlHandler next) {
         webInput.configureExecutionInput((input, builder) -> {
             DataLoaderRegistry registry = new DataLoaderRegistry();
-            DataLoader<Integer, Author> dataLoader = DataLoader.newDataLoader(authorLoader);
+            DataLoader<Integer, Author> dataLoader = DataLoaderFactory.newDataLoader(authorLoader);
             registry.register("authorLoader", dataLoader);
             return builder.dataLoaderRegistry(registry).build();
         });
@@ -658,16 +638,13 @@ public class AuthorLoaderRegistration implements WebInterceptor {
 ### DataLoaderでデータフェッチ
 
 ```java
-@Component
-public class ComicDataWiring implements RuntimeWiringBuilderCustomizer {
+@Controller
+public class ComicController {
 
-    @Override
-    public void customize(RuntimeWiring.Builder paramBuilder) {
-        paramBuilder.type("Comic", b -> b.dataFetcher("author", env -> {
-            Comic source = env.getSource();
-            DataLoader<Integer, Author> authorLoader = env.getDataLoader("authorLoader");
-            return authorLoader.load(source.getAuthorId());
-        }));
+    @SchemaMapping
+    public CompletableFuture<Author> author(Comic source, DataFetchingEnvironment env) {
+        DataLoader<Integer, Author> authorLoader = env.getDataLoader("authorLoader");
+        return authorLoader.load(source.getAuthorId());
     }
 }
 ```
@@ -794,16 +771,16 @@ query {
 ## Connections実装例：DataFetcher全体
 
 ```java
-paramBuilder.type("Query", b -> b.dataFetcher("exampleForward", env -> {
-    int pageSize = env.getArgument("first");
-    String conditionCursor = env.getArgument("after");
+@QueryMapping
+public Connection<Example> exampleForward(
+        @Argument int first, @Argument String after) {
 
     List<Edge<Example>> edges = ...
 
     PageInfo pageInfo = ...
 
     return new DefaultConnection<>(edges, pageInfo);
-}));
+}
 ```
 
 ---
@@ -867,12 +844,13 @@ GraphQLの仕様にはエラーの表現も含まれている
 
 ### Spring GraphQLでエラーを返す
 
-`DataFetcher`から例外をスローするとエラーに変換して返してくれる
+コントローラーから例外をスローするとエラーに変換してくれる
 
 ```java
-paramBuilder.type("Query", b -> b.dataFetcher("hello", env -> {
+@QueryMapping
+public Object hello() {
     throw new Exception("Exception occurred while processing hello");
-}));
+}
 ```
 
 ```json
@@ -889,19 +867,19 @@ paramBuilder.type("Query", b -> b.dataFetcher("hello", env -> {
 
 ### Spring GraphQLでの例外ハンドリング
 
-例外をハンドリングする場合は`DataFetcherExceptionResolver`を実装する
+例外をハンドリングする場合は`DataFetcherExceptionResolver`を実装する。`DataFetcherExceptionResolverAdapter`を利用するのが少しだけ簡単。
 
 ```java
 @Component
-public class MyExceptionResolver implements DataFetcherExceptionResolver {
+public class MyExceptionResolver extends DataFetcherExceptionResolverAdapter {
     @Override
-    public Mono<List<GraphQLError>> resolveException(
+    public GraphQLError resolveException(
                 Throwable e, DataFetchingEnvironment env) {
         if(e instanceof MyException) {
             GraphQLError error = GraphqlErrorBuilder.newError(env).message("...").build();
-            return Mono.just(List.of(error));
+            return error;
         }
-        return Mono.empty();
+        return null;
     }
 }
 ```
@@ -934,11 +912,17 @@ scalar URI
 ```
 
 ```java
-Coercing<?, ?> coercing = new URICoercing();
-GraphQLScalarType scalarType = GraphQLScalarType.newScalar()
-    .name("URI").coercing(coercing).build();
-// typeメソッドではなくscalarメソッドで定義する
-paramBuilder.scalar(scalarType);
+@Component
+public class ScalarDataWiring implements RuntimeWiringConfigurer {
+
+    @Override
+    public void configure(RuntimeWiring.Builder paramBuilder) {
+        Coercing<?, ?> coercing = new URICoercing();
+        GraphQLScalarType scalarType = GraphQLScalarType.newScalar()
+            .name("URI").coercing(coercing).build();
+        paramBuilder.scalar(scalarType);
+    }
+}
 ```
 
 ---
@@ -982,10 +966,21 @@ public enum Visibility {
 }
 ```
 
+---
+
+### Enumの実装方法
+
 ```java
-EnumValuesProvider enumValuesProvider = new NaturalEnumValuesProvider<>(Visibility.class);
-// dataFetcherメソッドではなくenumValuesメソッドで定義する
-paramBuilder.type("Visibility", b -> b.enumValues(enumValuesProvider));
+@Component
+public class EnumDataWiring implements RuntimeWiringConfigurer {
+
+    @Override
+    public void configure(RuntimeWiring.Builder paramBuilder) {
+        EnumValuesProvider enumValuesProvider =
+            new NaturalEnumValuesProvider<>(Visibility.class);
+        paramBuilder.type("Visibility", b -> b.enumValues(enumValuesProvider));
+    }
+}
 ```
 
 ---
@@ -1005,7 +1000,7 @@ paramBuilder.type("Visibility", b -> b.enumValues(enumValuesProvider));
 
 ## コンテキストの伝播
 
-GraphQL Javaから呼び出される`DataFetcher`などのコンポーネントはSpring Web MVCのリクエストをハンドリングするスレッドと同じスレッドで実行されるとは限らない
+GraphQL Javaから呼び出されるコントローラーのメソッドはSpring Web MVCのリクエストをハンドリングするスレッドと同じスレッドで実行されるとは限らない
 
 そのためスレッドローカルで持ち回すような値は`org.springframework.graphql.execution.ThreadLocalAccessor`を実装して伝搬させてあげる必要がある
 
@@ -1030,7 +1025,7 @@ GraphQL Javaから呼び出される`DataFetcher`などのコンポーネント�
 
 ## Querydslの統合
 
-Querydslのリポジトリから`DataFetcher`が簡単に作れるらしい(まだ試していない)
+Querydslのリポジトリからデータフェッチ定義が簡単に作れるらしい(まだ試していない)
 
 詳しくはSpring GraphQLリファレンスのData Integrationセクションを参照
 
@@ -1038,16 +1033,14 @@ Querydslのリポジトリから`DataFetcher`が簡単に作れるらしい(ま�
 
 ## ロードマップ
 
-- 9月頭のSpringOneの前にM2到達予定
 - マイルストーンフェーズは11月のSpring Boot 2.6以降も続く
 - 今年の後半にリリース候補版(RC)フェーズに入る予定
 
 ---
 
-## M2に入るかもしれない機能
+## 今後に入るかもしれない機能
 
 - Spring Dataの統合(Querydslと同様に)
-- アノテーションによる`DataFetcher`登録(`@RestController`みたいな)
 - `DataLoader`登録方法の改善
 - GraphQLクライアントの追加
 - マルチパート(ファイルアップロード)の対応
