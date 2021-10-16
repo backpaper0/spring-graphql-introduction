@@ -16,7 +16,7 @@ public class MetaVarExceptionResolver implements DataFetcherExceptionResolver {
 
 	@Override
 	public Mono<List<GraphQLError>> resolveException(Throwable exception, DataFetchingEnvironment environment) {
-		GraphQLContext context = environment.getContext();
+		GraphQLContext context = environment.getGraphQlContext();
 		if (context != null) {
 			Boolean handling = context.get("handling");
 
