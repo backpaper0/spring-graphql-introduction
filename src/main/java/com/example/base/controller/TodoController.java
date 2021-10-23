@@ -40,4 +40,22 @@ public class TodoController {
 		todo.setTodoStatus(TodoStatus.TODO);
 		return todoRepository.save(todo);
 	}
+
+	@MutationMapping
+	public Todo updateTodo(@Argument UpdateTodo input) {
+		Todo todo = todoRepository.findById(input.getId()).orElseThrow();
+		if (input.getTitle() != null) {
+			todo.setTitle(input.getTitle());
+		}
+		if (input.getTodoStatus() != null) {
+			todo.setTodoStatus(input.getTodoStatus());
+		}
+		return todoRepository.save(todo);
+	}
+
+	@MutationMapping
+	public Integer deleteTodo(@Argument Integer id) {
+		todoRepository.deleteById(id);
+		return id;
+	}
 }

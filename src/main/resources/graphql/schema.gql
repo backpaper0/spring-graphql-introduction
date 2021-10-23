@@ -46,5 +46,5 @@ type Mutation {
     createArticle(title: String!, content: String!, categoryId: ID!): Article!
     createTodo(input: CreateTodo!): Todo!
     updateTodo(input: UpdateTodo!): Todo!
-    deleteTodo(id: ID!): Todo!
+    deleteTodo(id: ID!): ID!
 }
