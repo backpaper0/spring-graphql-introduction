@@ -1,11 +1,12 @@
 package com.example.base.controller;
 
 import com.example.base.entity.TodoStatus;
+import com.example.base.entity.TodoTitle;
 
 public class UpdateTodo {
 
 	private Integer id;
-	private String title;
+	private TodoTitle title;
 	private TodoStatus todoStatus;
 
 	public Integer getId() {
@@ -16,11 +17,11 @@ public class UpdateTodo {
 		this.id = id;
 	}
 
-	public String getTitle() {
+	public TodoTitle getTitle() {
 		return title;
 	}
 
-	public void setTitle(String title) {
+	public void setTitle(TodoTitle title) {
 		this.title = title;
 	}
 

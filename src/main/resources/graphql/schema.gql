@@ -17,6 +17,8 @@ type Todo {
     todoStatus: TodoStatus!
 }
 
+scalar TodoTitle
+
 enum TodoStatus {
     TODO
     DOING
@@ -24,12 +26,12 @@ enum TodoStatus {
 }
 
 input CreateTodo {
-    title: String!
+    title: TodoTitle!
 }
 
 input UpdateTodo {
     id: ID!
-    title: String
+    title: TodoTitle
     todoStatus: TodoStatus
 }
 

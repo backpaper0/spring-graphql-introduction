@@ -40,7 +40,7 @@ public class TodoTest {
 			"  }" +
 			"}";
 
-	private static final String CREATE_TODO_QUERY = "mutation CreateTodo($title: String!) {" +
+	private static final String CREATE_TODO_QUERY = "mutation CreateTodo($title: TodoTitle!) {" +
 			"  result: createTodo(input: {" +
 			"    title: $title" +
 			"  }) {" +
