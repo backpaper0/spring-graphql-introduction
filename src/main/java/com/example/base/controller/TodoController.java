@@ -36,7 +36,7 @@ public class TodoController {
 	@MutationMapping
 	public Todo createTodo(@Argument CreateTodo input) {
 		Todo todo = new Todo();
-		todo.setTitle(input.getTitle().getValue());
+		todo.setTitle(input.getTitle());
 		todo.setTodoStatus(TodoStatus.TODO);
 		return todoRepository.save(todo);
 	}
@@ -45,7 +45,7 @@ public class TodoController {
 	public Todo updateTodo(@Argument UpdateTodo input) {
 		Todo todo = todoRepository.findById(input.getId()).orElseThrow();
 		if (input.getTitle() != null) {
-			todo.setTitle(input.getTitle().getValue());
+			todo.setTitle(input.getTitle());
 		}
 		if (input.getTodoStatus() != null) {
 			todo.setTodoStatus(input.getTodoStatus());

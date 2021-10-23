@@ -13,7 +13,7 @@ public class Todo {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	private String title;
+	private TodoTitle title;
 	@Enumerated(EnumType.STRING)
 	private TodoStatus todoStatus;
 
@@ -25,11 +25,11 @@ public class Todo {
 		this.id = id;
 	}
 
-	public String getTitle() {
+	public TodoTitle getTitle() {
 		return title;
 	}
 
-	public void setTitle(String title) {
+	public void setTitle(TodoTitle title) {
 		this.title = title;
 	}
 

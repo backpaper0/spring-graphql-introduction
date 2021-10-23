@@ -13,7 +13,7 @@ type Category {
 
 type Todo {
     id: ID!
-    title: String!
+    title: TodoTitle!
     todoStatus: TodoStatus!
 }
 
