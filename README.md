@@ -47,7 +47,7 @@ Spring GraphQLにビルトインされているGraphiQLは認証と`subscription
 
 Spring Bootアプリケーションに組み込むには、まずSpring Bootアプリケーション側の`src/main/resources/static/my-graphiql`を削除する。
 それから`npm run build`を実施すると`src/main/resources/static/my-graphiql`にビルドされたHTMLやJSファイルが書き出される。
-あとは`mvn spring-boot:run`をすれば良い。
+あとは`./mvnw spring-boot:run`をすれば良い。
 
 ### query操作
 
