@@ -10,13 +10,41 @@ type Category {
     name: String!
 }
 
+
+type Todo {
+    id: ID!
+    title: String!
+    todoStatus: TodoStatus!
+}
+
+enum TodoStatus {
+    TODO
+    DOING
+    DONE
+}
+
+input CreateTodo {
+    title: String!
+}
+
+input UpdateTodo {
+    id: ID!
+    title: String
+    todoStatus: TodoStatus
+}
+
 type Query {
-	article(id: ID!): Article
-	articles: [Article!]!
-	categories: [Category!]!
+    article(id: ID!): Article
+    articles: [Article!]!
+    categories: [Category!]!
+    allTodo: [Todo!]!
+    findTodo(id: ID!): Todo
 }
 
 type Mutation {
-	createCategory(name: String!): Category!
-	createArticle(title: String!, content: String!, categoryId: ID!): Article!
+    createCategory(name: String!): Category!
+    createArticle(title: String!, content: String!, categoryId: ID!): Article!
+    createTodo(input: CreateTodo!): Todo!
+    updateTodo(input: UpdateTodo!): Todo!
+    deleteTodo(id: ID!): Todo!
 }
