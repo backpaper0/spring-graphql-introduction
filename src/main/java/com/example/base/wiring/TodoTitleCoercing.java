@@ -21,7 +21,11 @@ public class TodoTitleCoercing implements Coercing<TodoTitle, String> {
 	@Override
 	public TodoTitle parseValue(Object input) throws CoercingParseValueException {
 		if (input instanceof String) {
-			return new TodoTitle((String) input);
+			try {
+				return new TodoTitle((String) input);
+			} catch (IllegalArgumentException e) {
+				throw new CoercingParseValueException.Builder().message(e.getMessage()).build();
+			}
 		}
 		throw new CoercingParseValueException();
 	}

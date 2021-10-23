@@ -6,10 +6,6 @@ public class CreateTodo {
 
 	private TodoTitle title;
 
-	public CreateTodo() {
-		System.out.println("xxx");
-	}
-
 	public TodoTitle getTitle() {
 		return title;
 	}

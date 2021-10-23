@@ -143,4 +143,16 @@ public class TodoTest {
 				.variable("id", id2).execute()
 				.path("result").valueDoesNotExist();
 	}
+
+	@Test
+	@Order(400)
+	void createTodoInvalid() {
+		graphQlTester.query(CREATE_TODO_QUERY)
+				.variable("title", "1234567890x").execute()
+				.errors()
+				.filter(a -> a.getMessage()
+						//この invalid value : ってなんだ、、、？
+						.equals("invalid value : invalid value : title length must be less than or equal 10"))
+				.verify();
+	}
 }
