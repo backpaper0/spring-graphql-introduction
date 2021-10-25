@@ -1,7 +1,6 @@
 # Spring GraphQL introduction
 
-[![CI for Spring GraphQL introduction example code](https://github.com/backpaper0/spring-graphql-introduction/actions/workflows/ci.yml/badge.svg)](https://github.com/backpaper0/spring-graphql-introduction/actions/workflows/ci.yml)
-
+[![CI for example code](https://github.com/backpaper0/spring-graphql-introduction/actions/workflows/ci.yml/badge.svg)](https://github.com/backpaper0/spring-graphql-introduction/actions/workflows/ci.yml)
 
 <!-- @import "[TOC]" {cmd="toc" depthFrom=1 depthTo=6 orderedList=false} -->
 
