@@ -1,4 +1,4 @@
-name: CI for Spring GraphQL introduction example code
+name: CI for example code
 
 on:
   push:
