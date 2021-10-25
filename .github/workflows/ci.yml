@@ -1,0 +1,32 @@
+name: CI for Spring GraphQL introduction example code
+
+on:
+  push:
+    paths:
+    - 'src/**'
+    - 'pom.xml'
+    - '.github/workflows/ci.yml'
+
+jobs:
+  verify:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        java: [ 11, 17 ]
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - uses: actions/setup-java@v2
+      with:
+        distribution: temurin
+        java-version: ${{ matrix.java }}
+        cache: maven
+
+    - name: Grant execute permission for mvnw
+      run: chmod +x mvnw
+
+    - name: Verify with Maven
+      run: ./mvnw -B -e verify
