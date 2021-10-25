@@ -15,12 +15,13 @@
 	<description>Demo project for Spring Boot</description>
 	<properties>
 		<java.version>11</java.version>
+		<spring-graphql.version>1.0.0-M2</spring-graphql.version>
 	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.experimental</groupId>
 			<artifactId>graphql-spring-boot-starter</artifactId>
-			<version>1.0.0-M2</version>
+			<version>${spring-graphql.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -62,7 +63,7 @@
 		<dependency>
 			<groupId>org.springframework.graphql</groupId>
 			<artifactId>spring-graphql-test</artifactId>
-			<version>1.0.0-M2</version>
+			<version>${spring-graphql.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
