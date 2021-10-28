@@ -41,12 +41,12 @@ public class CommitController {
 	}
 
 	@SchemaMapping(typeName = "History")
-	public Connection<Commit> forward(@Argument int first, @Argument(required = false) String after) {
+	public Connection<Commit> forward(@Argument int first, @Argument String after) {
 		return fetchData(em, true, first, after);
 	}
 
 	@SchemaMapping(typeName = "History")
-	public Connection<Commit> backward(@Argument int last, @Argument(required = false) String before) {
+	public Connection<Commit> backward(@Argument int last, @Argument String before) {
 		return fetchData(em, false, last, before);
 	}
 

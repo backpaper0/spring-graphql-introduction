@@ -50,7 +50,7 @@ public class SecurityTest {
 
 				.path("security.public")
 				.entity(String.class)
-				.isEqualTo("PUBLIC: anonymousUser");
+				.isEqualTo("PUBLIC: <none>");
 	}
 
 	@Test

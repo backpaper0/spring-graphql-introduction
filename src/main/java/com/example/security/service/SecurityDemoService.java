@@ -11,16 +11,12 @@ import org.springframework.stereotype.Component;
 public class SecurityDemoService {
 
 	public String doPublic() {
-		SecurityContext context = SecurityContextHolder.getContext();
-		Authentication authentication = context.getAuthentication();
-		return "PUBLIC: " + authentication.getName();
+		return "PUBLIC: " + name();
 	}
 
 	@PreAuthorize("isAuthenticated()")
 	public String doProtected() {
-		SecurityContext context = SecurityContextHolder.getContext();
-		Authentication authentication = context.getAuthentication();
-		return "PROTECTED: " + authentication.getName();
+		return "PROTECTED: " + name();
 	}
 
 	@Secured("ROLE_FOO")
@@ -34,8 +30,15 @@ public class SecurityDemoService {
 	}
 
 	public String protected2() {
+		return "PROTECTED2: " + name();
+	}
+
+	private String name() {
 		SecurityContext context = SecurityContextHolder.getContext();
 		Authentication authentication = context.getAuthentication();
-		return "PROTECTED2: " + authentication.getName();
+		if (authentication != null) {
+			return authentication.getName();
+		}
+		return "<none>";
 	}
 }

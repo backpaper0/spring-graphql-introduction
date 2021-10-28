@@ -4,9 +4,9 @@ import org.dataloader.DataLoader;
 import org.dataloader.DataLoaderFactory;
 import org.dataloader.DataLoaderOptions;
 import org.dataloader.DataLoaderRegistry;
-import org.springframework.graphql.web.WebGraphQlHandler;
 import org.springframework.graphql.web.WebInput;
 import org.springframework.graphql.web.WebInterceptor;
+import org.springframework.graphql.web.WebInterceptorChain;
 import org.springframework.graphql.web.WebOutput;
 import org.springframework.stereotype.Component;
 
@@ -24,7 +24,7 @@ public class AuthorLoaderRegistration implements WebInterceptor {
 	}
 
 	@Override
-	public Mono<WebOutput> intercept(WebInput webInput, WebGraphQlHandler next) {
+	public Mono<WebOutput> intercept(WebInput webInput, WebInterceptorChain chain) {
 
 		webInput.configureExecutionInput((input, builder) -> {
 			DataLoaderRegistry registry = new DataLoaderRegistry();
@@ -41,6 +41,6 @@ public class AuthorLoaderRegistration implements WebInterceptor {
 			return builder.dataLoaderRegistry(registry).build();
 		});
 
-		return next.handle(webInput);
+		return chain.next(webInput);
 	}
 }
