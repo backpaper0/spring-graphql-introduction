@@ -46,11 +46,11 @@ public class ComicController {
 
 	@BatchMapping
 	public List<Author> author(List<Comic> sources) {
-		List<Integer> ids = sources.stream().map(Comic::getAuthorId).collect(Collectors.toList());
+		List<Integer> ids = sources.stream().map(Comic::getAuthorId).toList();
 		logger.debug("Fetch Comic.author: authorIds = {}", ids);
 		Map<Integer, Author> authors = authorRepository.findByIds(ids).stream()
 				.collect(Collectors.toMap(Author::getId, Function.identity()));
-		return ids.stream().map(authors::get).collect(Collectors.toList());
+		return ids.stream().map(authors::get).toList();
 	}
 
 	@SchemaMapping
