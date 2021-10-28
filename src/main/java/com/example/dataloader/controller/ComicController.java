@@ -1,19 +1,24 @@
 package com.example.dataloader.controller;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
-import org.dataloader.DataLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.graphql.data.method.annotation.Argument;
+import org.springframework.graphql.data.method.annotation.BatchMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.graphql.data.method.annotation.SchemaMapping;
 import org.springframework.stereotype.Controller;
 
 import com.example.dataloader.entity.Author;
 import com.example.dataloader.entity.Comic;
+import com.example.dataloader.entity.Publisher;
 import com.example.dataloader.repository.AuthorRepository;
 import com.example.dataloader.repository.ComicRepository;
+import com.example.dataloader.repository.PublisherRepository;
 
 import graphql.schema.DataFetchingEnvironment;
 
@@ -24,10 +29,13 @@ public class ComicController {
 
 	private final ComicRepository comicRepository;
 	private final AuthorRepository authorRepository;
+	private final PublisherRepository publisherRepository;
 
-	public ComicController(ComicRepository comicRepository, AuthorRepository authorRepository) {
+	public ComicController(ComicRepository comicRepository, AuthorRepository authorRepository,
+			PublisherRepository publisherRepository) {
 		this.comicRepository = comicRepository;
 		this.authorRepository = authorRepository;
+		this.publisherRepository = publisherRepository;
 	}
 
 	@QueryMapping
@@ -36,13 +44,20 @@ public class ComicController {
 		return comicRepository.findAll();
 	}
 
+	@BatchMapping
+	public List<Author> author(List<Comic> sources) {
+		List<Integer> ids = sources.stream().map(a -> a.getAuthorId()).collect(Collectors.toList());
+		logger.debug("Fetch Comic.author: authorIds = {}", ids);
+		Map<Integer, Author> authors = authorRepository.findByIds(ids).stream()
+				.collect(Collectors.toMap(Author::getId, Function.identity()));
+		return ids.stream().map(authors::get).collect(Collectors.toList());
+	}
+
 	@SchemaMapping
-	public Object author(@Argument boolean useDataLoader, Comic source, DataFetchingEnvironment env) {
-		logger.debug("Fetch Comic.author: authorId = {}", source.getAuthorId());
-		if (useDataLoader) {
-			DataLoader<Integer, Author> authorLoader = env.getDataLoader("authorLoader");
-			return authorLoader.load(source.getAuthorId());
-		}
-		return authorRepository.findById(source.getAuthorId());
+	public Optional<Publisher> publisher(Comic source, DataFetchingEnvironment env) {
+		logger.debug("Fetch Comic.publisher: publisherId = {}", source.getPublisherId());
+		// findByIdだとJPAがキャッシュしてくれちゃうので自前でメソッドを用意。
+		// キャッシュしてくれるのはありがたいけれど、DataLoaderを見せたい今この場面ではキャッシュしたくない。
+		return publisherRepository.myFindById(source.getPublisherId());
 	}
 }

@@ -5,10 +5,16 @@ extend type Query {
 type Comic {
 	id: ID!
 	title: String!
-	author(useDataLoader: Boolean! = false): Author!
+	author: Author!
+	publisher: Publisher!
 }
 
 type Author {
+	id: ID!
+	name: String!
+}
+
+type Publisher {
 	id: ID!
 	name: String!
 }

@@ -169,14 +169,14 @@ wscat --connect ws://localhost:8080/graphql
 query {
   comics {
     title
-    author {
+    publisher {
       name
     }
   }
 }
 ```
 
-`Fetch Query.comics`以降のログを見ると`comics`で1回、`comics.author`で10回のクエリーが発行されていることがわかる。
+`Fetch Query.comics`以降のログを見ると`comics`で1回、`comics.publisher`で10回のクエリーが発行されていることがわかる。
 
 次にDataLoader版。
 
@@ -184,7 +184,7 @@ query {
 query {
   comics {
     title
-    author(useDataLoader: true) {
+    author {
       name
     }
   }

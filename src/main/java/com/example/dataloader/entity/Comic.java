@@ -13,13 +13,15 @@ public class Comic {
 	private Integer id;
 	private String title;
 	private Integer authorId;
+	private Integer publisherId;
 
 	public Comic() {
 	}
 
-	public Comic(String title, Integer authorId) {
+	public Comic(String title, Author author, Publisher publisher) {
 		this.title = title;
-		this.authorId = authorId;
+		this.authorId = author.getId();
+		this.publisherId = publisher.getId();
 	}
 
 	public Integer getId() {
@@ -44,5 +46,13 @@ public class Comic {
 
 	public void setAuthorId(Integer authorId) {
 		this.authorId = authorId;
+	}
+
+	public Integer getPublisherId() {
+		return publisherId;
+	}
+
+	public void setPublisherId(Integer publisherId) {
+		this.publisherId = publisherId;
 	}
 }
