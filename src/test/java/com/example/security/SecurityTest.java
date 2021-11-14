@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.graphql.boot.test.tester.AutoConfigureGraphQlTester;
 import org.springframework.graphql.execution.ErrorType;
 import org.springframework.graphql.test.tester.GraphQlTester;
+import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithMockUser;
 
 @SpringBootTest
@@ -151,6 +152,16 @@ public class SecurityTest {
 	}
 
 	@Test
+	@WithMockUser(username = "demo")
+	void protected2Authenticated() {
+		graphQlTester.query(PROTECTED2_QUERY)
+				.execute()
+				.path("security.protected2")
+				.entity(String.class)
+				.isEqualTo("PROTECTED2: demo");
+	}
+
+	@Test
 	void protected2NotAuthenticated() {
 		graphQlTester.query(PROTECTED2_QUERY)
 				.execute()
@@ -162,12 +173,14 @@ public class SecurityTest {
 	}
 
 	@Test
-	@WithMockUser(username = "demo")
-	void protected2Authenticated() {
+	@WithAnonymousUser
+	void protected2Anonymous() {
 		graphQlTester.query(PROTECTED2_QUERY)
 				.execute()
-				.path("security.protected2")
-				.entity(String.class)
-				.isEqualTo("PROTECTED2: demo");
+
+				.errors()
+				.filter(error -> error.getPath().equals(List.of("security", "protected2"))
+						&& error.getErrorType().equals(ErrorType.UNAUTHORIZED)) // なんでこっちはUNAUTHORIZEDなんだろう？
+				.verify();
 	}
 }
