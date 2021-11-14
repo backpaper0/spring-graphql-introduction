@@ -25,7 +25,7 @@ theme: gaia
 
 ## 概要
 
-- [Spring GraphQL](https://github.com/spring-projects/spring-graphql)のマイルストーンバージョンが発表された(現在はM2)
+- [Spring GraphQL](https://github.com/spring-projects/spring-graphql)のマイルストーンバージョンが発表された(現在はM3)
 - GraphQLは良いものだと思うので、みなさんにもSpring GraphQLを知ってもらいたい！
 - まずGraphQLについて簡単に説明
 - それからSpring GraphQLを使ったサーバー側の実装方法を説明
@@ -34,7 +34,7 @@ theme: gaia
 
 ## 前置き
 
-- この発表はSpring GraphQL 1.0.0-M2をもとにしています
+- この発表はSpring GraphQL 1.0.0-M3をもとにしています
 - GraphQLの仕様はCurrent Working Draftを参考にしています
 - スライドに現れるコードは説明のため一部省略していることがあります
 
@@ -586,7 +586,31 @@ graphQlTester.query(query)
 
 ---
 
-## DataLoaderを使った実装方法
+## DataLoaderを使った実装方法(1.0.0-M3以降)
+
+- コントローラーに`@BatchMapping`を付与したメソッドを定義する
+- 引数はソースのリスト
+- 戻り値はリスト、またはマップ(`org.dataloader.BatchLoader`、`org.dataloader.MappedBatchLoader`へ対応)
+
+---
+
+## @BatchMappingを付与したメソッドの実装例
+
+```java
+@BatchMapping
+public List<Author> author(List<Comic> sources) {
+    List<Integer> ids = sources.stream().map(Comic::getAuthorId).toList();
+    Map<Integer, Author> authors = authorRepository.findByIds(ids).stream()
+            .collect(Collectors.toMap(Author::getId, Function.identity()));
+    return ids.stream().map(authors::get).toList();
+}
+```
+
+詳しくは[Spring GraphQL 1.0.0-M3でDataLoaderもアノテーションマッピングできるようになった](https://zenn.dev/backpaper0/articles/468f806c5fa5e5)を参照
+
+---
+
+## DataLoaderを使った実装方法(1.0.0-M2まで)
 
 - `org.dataloader.BatchLoader`を実装したクラスを作る
 - `org.springframework.graphql.web.WebInterceptor`を実装したクラスを用意して`intercept`メソッドでリクエストオブジェクトへDataLoaderを登録する
