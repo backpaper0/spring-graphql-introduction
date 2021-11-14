@@ -43,6 +43,12 @@ public class SecurityTest {
 			+ "  }"
 			+ "}";
 
+	private static final String PROTECTED2_QUERY = "{"
+			+ "  security {"
+			+ "    protected2"
+			+ "  }"
+			+ "}";
+
 	@Test
 	void publicNotAuthenticated() {
 		graphQlTester.query(PUBLIC_QUERY)
@@ -142,5 +148,26 @@ public class SecurityTest {
 				.filter(error -> error.getPath().equals(List.of("security", "roleBarBaz"))
 						&& error.getErrorType().equals(ErrorType.UNAUTHORIZED))
 				.verify();
+	}
+
+	@Test
+	void protected2NotAuthenticated() {
+		graphQlTester.query(PROTECTED2_QUERY)
+				.execute()
+
+				.errors()
+				.filter(error -> error.getPath().equals(List.of("security", "protected2"))
+						&& error.getErrorType().equals(ErrorType.INTERNAL_ERROR)) // UNAUTHORIZEDにしたい
+				.verify();
+	}
+
+	@Test
+	@WithMockUser(username = "demo")
+	void protected2Authenticated() {
+		graphQlTester.query(PROTECTED2_QUERY)
+				.execute()
+				.path("security.protected2")
+				.entity(String.class)
+				.isEqualTo("PROTECTED2: demo");
 	}
 }
