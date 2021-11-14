@@ -1,4 +1,4 @@
-package com.example.datafetcherreturntype.wiring;
+package com.example.datafetcherreturntype.controller;
 
 import java.util.Collections;
 import java.util.List;
