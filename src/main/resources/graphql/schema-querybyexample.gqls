@@ -1,0 +1,10 @@
+extend type Query {
+ 	tweets(username: String!): [Tweet!]!
+ 	tweet(id: ID!): Tweet
+}
+
+type Tweet {
+	id: ID!
+	username: String!
+	content: String!
+}
