@@ -1,35 +1,16 @@
 package com.example.base.controller;
 
+import org.springframework.data.web.ProjectedPayload;
+
 import com.example.base.entity.TodoStatus;
 import com.example.base.entity.TodoTitle;
 
-public class UpdateTodo {
+@ProjectedPayload
+public interface UpdateTodo {
 
-	private Integer id;
-	private TodoTitle title;
-	private TodoStatus todoStatus;
+	Integer getId();
 
-	public Integer getId() {
-		return id;
-	}
+	TodoTitle getTitle();
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public TodoTitle getTitle() {
-		return title;
-	}
-
-	public void setTitle(TodoTitle title) {
-		this.title = title;
-	}
-
-	public TodoStatus getTodoStatus() {
-		return todoStatus;
-	}
-
-	public void setTodoStatus(TodoStatus todoStatus) {
-		this.todoStatus = todoStatus;
-	}
+	TodoStatus getTodoStatus();
 }
