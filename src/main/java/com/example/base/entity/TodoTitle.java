@@ -1,10 +1,13 @@
 package com.example.base.entity;
 
+import javax.validation.constraints.Size;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public class TodoTitle {
 
+	@Size(min = 1, message = "title length must be greater than or equal 1")
 	private final String value;
 
 	@JsonCreator

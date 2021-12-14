@@ -3,6 +3,8 @@ package com.example.base.controller;
 import java.util.List;
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Order;
 import org.springframework.graphql.data.method.annotation.Argument;
@@ -34,7 +36,7 @@ public class TodoController {
 	}
 
 	@MutationMapping
-	public Todo createTodo(@Argument CreateTodo input) {
+	public Todo createTodo(@Valid @Argument CreateTodo input) {
 		Todo todo = new Todo();
 		todo.setTitle(input.getTitle());
 		todo.setTodoStatus(TodoStatus.TODO);

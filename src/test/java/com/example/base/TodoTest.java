@@ -155,4 +155,15 @@ public class TodoTest {
 						.equals("invalid value : invalid value : title length must be less than or equal 10"))
 				.verify();
 	}
+
+	@Test
+	@Order(400)
+	void createTodoBeanValidation() {
+		graphQlTester.query(CREATE_TODO_QUERY)
+				.variable("title", "").execute()
+				.errors()
+				.filter(a -> a.getMessage()
+						.equals("createTodo.input.title.value: title length must be greater than or equal 1"))
+				.verify();
+	}
 }
