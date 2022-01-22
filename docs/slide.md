@@ -34,7 +34,7 @@ theme: gaia
 
 ## 前置き
 
-- この発表はSpring GraphQL 1.0.0-M3をもとにしています
+- このスライドはSpring GraphQL 1.0.0-M5をもとにしています
 - GraphQLの仕様はCurrent Working Draftを参考にしています
 - スライドに現れるコードは説明のため一部省略していることがあります
 
@@ -632,14 +632,14 @@ public class AuthorLoaderRegistration implements WebInterceptor {
     private final AuthorLoader authorLoader;
 
     @Override
-    public Mono<WebOutput> intercept(WebInput webInput, WebGraphQlHandler next) {
+    public Mono<WebOutput> intercept(WebInput webInput, WebInterceptorChain chain) {
         webInput.configureExecutionInput((input, builder) -> {
             DataLoaderRegistry registry = new DataLoaderRegistry();
             DataLoader<Integer, Author> dataLoader = DataLoaderFactory.newDataLoader(authorLoader);
             registry.register("authorLoader", dataLoader);
             return builder.dataLoaderRegistry(registry).build();
         });
-        return next.handle(webInput);
+        return chain.next(webInput);
     }
 }
 ```

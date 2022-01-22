@@ -23,7 +23,7 @@
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="3" data-paginate="true" data-theme="gaia" data-marpit-pagination="3" data-marpit-pagination-total="77" style="--paginate:true;--theme:gaia;">
 <h2>前置き</h2>
 <ul>
-<li>この発表はSpring GraphQL 1.0.0-M3をもとにしています</li>
+<li>このスライドはSpring GraphQL 1.0.0-M5をもとにしています</li>
 <li>GraphQLの仕様はCurrent Working Draftを参考にしています</li>
 <li>スライドに現れるコードは説明のため一部省略していることがあります</li>
 </ul>
@@ -524,14 +524,14 @@ type Query {
     <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> AuthorLoader authorLoader;
 
     <span class="hljs-meta">@Override</span>
-    <span class="hljs-function"><span class="hljs-keyword">public</span> Mono&lt;WebOutput&gt; <span class="hljs-title">intercept</span><span class="hljs-params">(WebInput webInput, WebGraphQlHandler next)</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> Mono&lt;WebOutput&gt; <span class="hljs-title">intercept</span><span class="hljs-params">(WebInput webInput, WebInterceptorChain chain)</span> </span>{
         webInput.configureExecutionInput((input, builder) -&gt; {
             DataLoaderRegistry registry = <span class="hljs-keyword">new</span> DataLoaderRegistry();
             DataLoader&lt;Integer, Author&gt; dataLoader = DataLoaderFactory.newDataLoader(authorLoader);
             registry.register(<span class="hljs-string">&quot;authorLoader&quot;</span>, dataLoader);
             <span class="hljs-keyword">return</span> builder.dataLoaderRegistry(registry).build();
         });
-        <span class="hljs-keyword">return</span> next.handle(webInput);
+        <span class="hljs-keyword">return</span> chain.next(webInput);
     }
 }
 </span></span></foreignObject></svg></code></pre>
