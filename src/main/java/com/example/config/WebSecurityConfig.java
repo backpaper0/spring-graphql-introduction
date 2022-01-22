@@ -16,7 +16,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.authorizeRequests(authorizeRequests -> authorizeRequests
 						// GraphQLエンドポイントはpermitAllにしておいて他の仕組みで認可制御を行う
 						.antMatchers("/graphql").permitAll()
-						.antMatchers("/my-graphiql/**").permitAll()
+						.antMatchers("/graphiql/**").permitAll()
 						.antMatchers("/actuator/**").permitAll()
 						.anyRequest().authenticated())
 

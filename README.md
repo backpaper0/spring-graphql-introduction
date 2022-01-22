@@ -53,23 +53,7 @@ npx @marp-team/marp-cli@latest --html --output docs/index.html docs/slide.md
 ./mvnw spring-boot:run
 ```
 
-ブラウザで http://localhost:8080/my-graphiql を開く。
-
-#### ※GraphiQLについて
-
-Spring GraphQLにビルトインされているGraphiQLは認証と`subscription`操作に対応していないため独自に調整したGraphiQLを用意している。
-
-ソースコードは`my-graphiql`にある。
-
-`create-react-app`で作ったReactアプリケーションとなっていて、カスタマイズしたい場合はまず`npm install`で依存ライブラリを準備する。
-
-それから`npm start`で起動する。
-カスタマイズ中はこちらで動作確認しながら開発を進めると良い。
-なお、このためにSpring Bootアプリケーション側でCORSの設定を入れている。
-
-Spring Bootアプリケーションに組み込むには、まずSpring Bootアプリケーション側の`src/main/resources/static/my-graphiql`を削除する。
-それから`npm run build`を実施すると`src/main/resources/static/my-graphiql`にビルドされたHTMLやJSファイルが書き出される。
-あとは`./mvnw spring-boot:run`をすれば良い。
+ブラウザで http://localhost:8080/graphiql を開く。
 
 ### query操作
 
