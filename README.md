@@ -25,7 +25,8 @@
 ## 概要
 
 [JSUG勉強会 2021年その2 Spring GraphQLをとことん語る夕べ](https://jsug.doorkeeper.jp/events/124798)での発表のスライドとコード例です。
-発表時はSpring GraphQL 1.0.0-M1でしたがM2が出たためスライドを更新しました。
+発表時はSpring GraphQL 1.0.0-M1でしたがM2、M3とバージョンを重ねているためたまにスライドを更新しています。
+JSUGでの発表当時のスライドは[20210806-jsug](https://github.com/backpaper0/spring-graphql-introduction/tree/20210806-jsug)タグを参照してください。
 
 ## 資料のビルド
 

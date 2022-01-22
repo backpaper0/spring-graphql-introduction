@@ -25,7 +25,7 @@ theme: gaia
 
 ## 概要
 
-- [Spring GraphQL](https://github.com/spring-projects/spring-graphql)のマイルストーンバージョンが発表された(現在はM3)
+- [Spring GraphQL](https://github.com/spring-projects/spring-graphql)のマイルストーンバージョンが発表された(現在はM5)
 - GraphQLは良いものだと思うので、みなさんにもSpring GraphQLを知ってもらいたい！
 - まずGraphQLについて簡単に説明
 - それからSpring GraphQLを使ったサーバー側の実装方法を説明
@@ -323,9 +323,8 @@ REST
 
 ```xml
 <dependency>
-    <groupId>org.springframework.experimental</groupId>
-    <artifactId>graphql-spring-boot-starter</artifactId>
-    <version>1.0.0-M2</version>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-graphql</artifactId>
 </dependency>
 <!-- もしくは spring-boot-starter-webflux -->
 <dependency>
@@ -333,6 +332,8 @@ REST
     <artifactId>spring-boot-starter-web</artifactId>
 </dependency>
 ```
+
+※Spring Boot 2.7.0-M1からSpring Bootリポジトリへ移動したためバージョンを指定しなくてよくなった
 
 ---
 
@@ -353,7 +354,6 @@ REST
 <dependency>
     <groupId>org.springframework.graphql</groupId>
     <artifactId>spring-graphql-test</artifactId>
-    <version>1.0.0-M2</version>
     <scope>test</scope>
 </dependency>
 <!-- WebTestClient のため必要になるっぽい -->
@@ -370,10 +370,8 @@ REST
 
 - クラスパス上の`graphql`ディレクトリ内の次の拡張子のファイルが読み込み対象となる
     - `.graphqls`
-    - `.graphql`
-    - `.gql`
     - `.gqls`
-- とりあえず`src/main/resources/graphql/schema.gql`にでも書いておけばOK
+- とりあえず`src/main/resources/graphql/schema.gqls`にでも書いておけばOK
 
 ---
 
@@ -386,17 +384,6 @@ spring.graphql.graphiql.enabled=true
 ```
 
 ※なお、デフォルトで有効化されているので実際には明示的に設定する必要はない
-
----
-
-### Spring GraphQLに組み込まれたGraphiQLについて
-
-現時点では次の制約がある
-
-- 認証に対応していない(`Authorization`ヘッダを設定できない、Cookieが送信されない)
-- `subscription`操作に対応していない
-
-そのため、コード例には独自にカスタマイズしたGraphiQLを用意している
 
 ---
 
