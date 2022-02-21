@@ -2,26 +2,6 @@
 
 [![CI for example code](https://github.com/backpaper0/spring-graphql-introduction/actions/workflows/ci.yml/badge.svg)](https://github.com/backpaper0/spring-graphql-introduction/actions/workflows/ci.yml)
 
-<!-- @import "[TOC]" {cmd="toc" depthFrom=1 depthTo=6 orderedList=false} -->
-
-<!-- code_chunk_output -->
-
-- [Spring GraphQL introduction](#spring-graphql-introduction)
-  - [概要](#概要)
-  - [資料のビルド](#資料のビルド)
-  - [デモの手順](#デモの手順)
-    - [準備](#準備)
-      - [※GraphiQLについて](#graphiqlについて)
-    - [query操作](#query操作)
-    - [subscription](#subscription)
-    - [DataLoader](#dataloader)
-    - [ページング](#ページング)
-    - [WIP: 認証・認可](#wip-認証認可)
-    - [メトリクス](#メトリクス)
-  - [ライセンス](#ライセンス)
-
-<!-- /code_chunk_output -->
-
 ## 概要
 
 [JSUG勉強会 2021年その2 Spring GraphQLをとことん語る夕べ](https://jsug.doorkeeper.jp/events/124798)での発表のスライドとコード例です。
@@ -300,6 +280,20 @@ curl -s localhost:8080/actuator/metrics/graphql.datafetcher | jq
 ```
 curl -s localhost:8080/actuator/metrics/graphql.error | jq
 ```
+
+---
+
+## その他の話題
+
+[graphqlviz](https://github.com/sheerun/graphqlviz)を使うとGraphQLスキーマを図にできる。
+
+```
+npx graphqlviz http://localhost:8080/graphql | dot -Tpng -o graphql-schema.png
+```
+
+次のような図が生成される。
+
+![](./docs/graphql-schema.png)
 
 ---
 
