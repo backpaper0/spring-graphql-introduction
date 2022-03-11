@@ -1,10 +1,14 @@
-import fetchGraphQL from './fetchGraphQL';
+import type { NextPage } from 'next';
 import useSWR from 'swr';
+import fetchGraphQL from '../lib/fetchGraphQL';
+import type { Comics } from '../lib/types';
 
-const fetcher = query => fetchGraphQL(query);
+function fetcher<T>(query: string): Promise<T> {
+  return fetchGraphQL<T>(query);
+}
 
-function App() {
-  const { data, error } = useSWR(`{
+const App: NextPage = () => {
+  const { data, error } = useSWR<Comics>(`{
     comics {
       id
       title

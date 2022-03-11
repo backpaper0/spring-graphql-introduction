@@ -1,4 +1,4 @@
-async function fetchGraphQL(text, variables) {
+async function fetchGraphQL<T>(text: string, variables?: any): Promise<T> {
 
     const response = await fetch('http://localhost:8080/graphql', {
         method: 'POST',
