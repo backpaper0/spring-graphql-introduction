@@ -35,7 +35,7 @@ public class TweetTest {
 
 	@Test
 	void tweets() {
-		graphQlTester.query(tweetsQuery)
+		graphQlTester.document(tweetsQuery)
 				.variable("username", "foo")
 				.execute()
 
@@ -46,7 +46,7 @@ public class TweetTest {
 
 	@Test
 	void tweet() {
-		graphQlTester.query(tweetQuery)
+		graphQlTester.document(tweetQuery)
 				.variable("id", 5)
 				.execute()
 

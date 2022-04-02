@@ -32,7 +32,7 @@ public class PingTest {
 
 	@Test
 	void defaultParameter() {
-		graphQlTester.query(QUERY)
+		graphQlTester.document(QUERY)
 				.execute()
 				.path("ping.ping1").entity(String.class).isEqualTo("pong")
 				.path("ping.ping2").entityList(String.class).isEqualTo(List.of("pong", "pong", "pong"))
@@ -46,17 +46,17 @@ public class PingTest {
 
 	@Test
 	void nullAndSize0() {
-		graphQlTester.query(QUERY)
+		graphQlTester.document(QUERY)
 				.variable("notNull", false)
 				.variable("size", 0)
 				.execute()
-				.path("ping.ping1").valueIsEmpty()
-				.path("ping.ping2").valueIsEmpty()
-				.path("ping.ping3").valueIsEmpty()
-				.path("ping.ping4").valueIsEmpty()
-				.path("ping.ping5").valueIsEmpty()
-				.path("ping.ping6").valueIsEmpty()
-				.path("ping.ping7").valueIsEmpty()
-				.path("ping.ping8").valueIsEmpty();
+				.path("ping.ping1").valueIsNull()
+				.path("ping.ping2").entityList(Object.class).isEqualTo(List.of())
+				.path("ping.ping3").valueIsNull()
+				.path("ping.ping4").entityList(Object.class).isEqualTo(List.of())
+				.path("ping.ping5").valueIsNull()
+				.path("ping.ping6").entityList(Object.class).isEqualTo(List.of())
+				.path("ping.ping7").valueIsNull()
+				.path("ping.ping8").valueIsNull();
 	}
 }

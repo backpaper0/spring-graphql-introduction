@@ -52,7 +52,7 @@ public class SecurityTest {
 
 	@Test
 	void publicNotAuthenticated() {
-		graphQlTester.query(PUBLIC_QUERY)
+		graphQlTester.document(PUBLIC_QUERY)
 				.execute()
 
 				.path("security.public")
@@ -63,7 +63,7 @@ public class SecurityTest {
 	@Test
 	@WithMockUser(username = "foobar")
 	void publicAuthenticated() {
-		graphQlTester.query(PUBLIC_QUERY)
+		graphQlTester.document(PUBLIC_QUERY)
 				.execute()
 
 				.path("security.public")
@@ -73,11 +73,11 @@ public class SecurityTest {
 
 	@Test
 	void protectedNotAuthenticated() {
-		graphQlTester.query(PROTECTED_QUERY)
+		graphQlTester.document(PROTECTED_QUERY)
 				.execute()
 
 				.errors()
-				.filter(error -> error.getPath().equals(List.of("security", "protected"))
+				.filter(error -> error.getParsedPath().equals(List.of("security", "protected"))
 						&& error.getErrorType().equals(ErrorType.UNAUTHORIZED))
 				.verify();
 	}
@@ -85,7 +85,7 @@ public class SecurityTest {
 	@Test
 	@WithMockUser(username = "foobar")
 	void protectedAuthenticated() {
-		graphQlTester.query(PROTECTED_QUERY)
+		graphQlTester.document(PROTECTED_QUERY)
 				.execute()
 
 				.path("security.protected")
@@ -96,7 +96,7 @@ public class SecurityTest {
 	@Test
 	@WithMockUser(username = "demo", roles = { "FOO" })
 	void roleFoo() {
-		graphQlTester.query(ROLE_FOO_QUERY)
+		graphQlTester.document(ROLE_FOO_QUERY)
 				.execute()
 
 				.path("security.roleFoo")
@@ -107,11 +107,11 @@ public class SecurityTest {
 	@Test
 	@WithMockUser(username = "demo", roles = { "BAR", "BAZ" })
 	void roleFoo2() {
-		graphQlTester.query(ROLE_FOO_QUERY)
+		graphQlTester.document(ROLE_FOO_QUERY)
 				.execute()
 
 				.errors()
-				.filter(error -> error.getPath().equals(List.of("security", "roleFoo"))
+				.filter(error -> error.getParsedPath().equals(List.of("security", "roleFoo"))
 						&& error.getErrorType().equals(ErrorType.UNAUTHORIZED))
 				.verify();
 	}
@@ -119,7 +119,7 @@ public class SecurityTest {
 	@Test
 	@WithMockUser(username = "demo", roles = { "BAR", "BAZ" })
 	void roleBarBaz1() {
-		graphQlTester.query(ROLE_BARBAZ_QUERY)
+		graphQlTester.document(ROLE_BARBAZ_QUERY)
 				.execute()
 
 				.path("security.roleBarBaz")
@@ -130,11 +130,11 @@ public class SecurityTest {
 	@Test
 	@WithMockUser(username = "demo", roles = { "FOO", "BAR" })
 	void roleBarBaz2() {
-		graphQlTester.query(ROLE_BARBAZ_QUERY)
+		graphQlTester.document(ROLE_BARBAZ_QUERY)
 				.execute()
 
 				.errors()
-				.filter(error -> error.getPath().equals(List.of("security", "roleBarBaz"))
+				.filter(error -> error.getParsedPath().equals(List.of("security", "roleBarBaz"))
 						&& error.getErrorType().equals(ErrorType.UNAUTHORIZED))
 				.verify();
 	}
@@ -142,11 +142,11 @@ public class SecurityTest {
 	@Test
 	@WithMockUser(username = "demo", roles = { "BAZ", "QUX" })
 	void roleBarBaz3() {
-		graphQlTester.query(ROLE_BARBAZ_QUERY)
+		graphQlTester.document(ROLE_BARBAZ_QUERY)
 				.execute()
 
 				.errors()
-				.filter(error -> error.getPath().equals(List.of("security", "roleBarBaz"))
+				.filter(error -> error.getParsedPath().equals(List.of("security", "roleBarBaz"))
 						&& error.getErrorType().equals(ErrorType.UNAUTHORIZED))
 				.verify();
 	}
@@ -154,7 +154,7 @@ public class SecurityTest {
 	@Test
 	@WithMockUser(username = "demo")
 	void protected2Authenticated() {
-		graphQlTester.query(PROTECTED2_QUERY)
+		graphQlTester.document(PROTECTED2_QUERY)
 				.execute()
 				.path("security.protected2")
 				.entity(String.class)
@@ -163,11 +163,11 @@ public class SecurityTest {
 
 	@Test
 	void protected2NotAuthenticated() {
-		graphQlTester.query(PROTECTED2_QUERY)
+		graphQlTester.document(PROTECTED2_QUERY)
 				.execute()
 
 				.errors()
-				.filter(error -> error.getPath().equals(List.of("security", "protected2"))
+				.filter(error -> error.getParsedPath().equals(List.of("security", "protected2"))
 						&& error.getErrorType().equals(ErrorType.INTERNAL_ERROR)) // UNAUTHORIZEDにしたい
 				.verify();
 	}
@@ -175,11 +175,11 @@ public class SecurityTest {
 	@Test
 	@WithAnonymousUser
 	void protected2Anonymous() {
-		graphQlTester.query(PROTECTED2_QUERY)
+		graphQlTester.document(PROTECTED2_QUERY)
 				.execute()
 
 				.errors()
-				.filter(error -> error.getPath().equals(List.of("security", "protected2"))
+				.filter(error -> error.getParsedPath().equals(List.of("security", "protected2"))
 						&& error.getErrorType().equals(ErrorType.UNAUTHORIZED)) // なんでこっちはUNAUTHORIZEDなんだろう？
 				.verify();
 	}

@@ -36,7 +36,7 @@ public class BlogTest {
 		//				}
 		//				""";
 
-		graphQlTester.query(query)
+		graphQlTester.document(query)
 				.execute()
 
 				.path("article.title")

@@ -1,5 +1,6 @@
 package com.example.paging;
 
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -41,7 +42,7 @@ public class CommitTest {
 			"  41 | 42 | 50 | true  | false",
 	}, delimiter = '|', nullValues = "null")
 	void forward(String after, int start, int end, boolean hasPreviousPage, boolean hasNextPage) {
-		graphQlTester.query(forwardQuery)
+		graphQlTester.document(forwardQuery)
 				.variable("after", after)
 				.execute()
 
@@ -70,12 +71,12 @@ public class CommitTest {
 
 	@Test
 	void forwardEmpty() {
-		graphQlTester.query(forwardQuery)
+		graphQlTester.document(forwardQuery)
 				.variable("after", "9999")
 				.execute()
 
 				.path("history.forward.edges")
-				.valueIsEmpty()
+				.entityList(Object.class).isEqualTo(List.of())
 
 				.path("history.forward.pageInfo.hasPreviousPage")
 				.entity(boolean.class)
@@ -86,10 +87,10 @@ public class CommitTest {
 				.isEqualTo(false)
 
 				.path("history.forward.pageInfo.startCursor")
-				.valueIsEmpty()
+				.valueIsNull()
 
 				.path("history.forward.pageInfo.endCursor")
-				.valueIsEmpty();
+				.valueIsNull();
 	}
 
 	@ParameterizedTest
@@ -104,7 +105,7 @@ public class CommitTest {
 			"  10 |  1 |  9 | false | true ",
 	}, delimiter = '|', nullValues = "null")
 	void backward(String before, int start, int end, boolean hasPreviousPage, boolean hasNextPage) {
-		graphQlTester.query(backwardQuery)
+		graphQlTester.document(backwardQuery)
 				.variable("before", before)
 				.execute()
 
@@ -133,12 +134,12 @@ public class CommitTest {
 
 	@Test
 	void backwardEmpty() {
-		graphQlTester.query(backwardQuery)
+		graphQlTester.document(backwardQuery)
 				.variable("before", "0")
 				.execute()
 
 				.path("history.backward.edges")
-				.valueIsEmpty()
+				.entityList(Object.class).isEqualTo(List.of())
 
 				.path("history.backward.pageInfo.hasPreviousPage")
 				.entity(boolean.class)
@@ -149,9 +150,9 @@ public class CommitTest {
 				.isEqualTo(false)
 
 				.path("history.backward.pageInfo.startCursor")
-				.valueIsEmpty()
+				.valueIsNull()
 
 				.path("history.backward.pageInfo.endCursor")
-				.valueIsEmpty();
+				.valueIsNull();
 	}
 }

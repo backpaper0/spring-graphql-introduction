@@ -34,7 +34,7 @@ public class PrefecturesTest {
 
 	@Test
 	void all() {
-		graphQlTester.query(query)
+		graphQlTester.document(query)
 				.execute()
 
 				.path("prefectures.edges[*].node")
@@ -60,7 +60,7 @@ public class PrefecturesTest {
 
 	@Test
 	void first() {
-		graphQlTester.query(query)
+		graphQlTester.document(query)
 				.variable("first", 3)
 				.execute()
 
@@ -87,7 +87,7 @@ public class PrefecturesTest {
 
 	@Test
 	void before() {
-		graphQlTester.query(query)
+		graphQlTester.document(query)
 				.variable("before", "c2ltcGxlLWN1cnNvcjM=")
 				.execute()
 
@@ -114,7 +114,7 @@ public class PrefecturesTest {
 
 	@Test
 	void firstAfter() {
-		graphQlTester.query(query)
+		graphQlTester.document(query)
 				.variable("first", 4)
 				.variable("after", "c2ltcGxlLWN1cnNvcjI=")
 				.execute()
@@ -142,7 +142,7 @@ public class PrefecturesTest {
 
 	@Test
 	void last() {
-		graphQlTester.query(query)
+		graphQlTester.document(query)
 				.variable("last", 3)
 				.execute()
 
@@ -169,7 +169,7 @@ public class PrefecturesTest {
 
 	@Test
 	void after() {
-		graphQlTester.query(query)
+		graphQlTester.document(query)
 				.variable("after", "c2ltcGxlLWN1cnNvcjQz")
 				.execute()
 
@@ -196,7 +196,7 @@ public class PrefecturesTest {
 
 	@Test
 	void lastBefore() {
-		graphQlTester.query(query)
+		graphQlTester.document(query)
 				.variable("last", 4)
 				.variable("before", "c2ltcGxlLWN1cnNvcjQ0")
 				.execute()
@@ -224,7 +224,7 @@ public class PrefecturesTest {
 
 	@Test
 	void firstAfterLastBefore() {
-		graphQlTester.query(query)
+		graphQlTester.document(query)
 				.variable("first", 10)
 				.variable("after", "c2ltcGxlLWN1cnNvcjE5")
 				.variable("last", 10)

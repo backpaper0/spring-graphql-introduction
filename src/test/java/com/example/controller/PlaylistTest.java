@@ -31,7 +31,7 @@ public class PlaylistTest {
 				"  }" +
 				"}";
 
-		graphQlTester.query(query)
+		graphQlTester.document(query)
 				.execute()
 
 				.path("playlist.name")

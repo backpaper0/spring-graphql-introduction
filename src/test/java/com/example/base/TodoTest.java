@@ -71,13 +71,13 @@ public class TodoTest {
 	@Test
 	@Order(100)
 	void createTodo() {
-		id1 = graphQlTester.query(CREATE_TODO_QUERY)
+		id1 = graphQlTester.document(CREATE_TODO_QUERY)
 				.variable("title", "foo").execute()
 				.path("result.title").entity(String.class).isEqualTo("foo")
 				.path("result.todoStatus").entity(TodoStatus.class).isEqualTo(TodoStatus.TODO)
 				.path("result.id").entity(Integer.class).get();
 
-		id2 = graphQlTester.query(CREATE_TODO_QUERY)
+		id2 = graphQlTester.document(CREATE_TODO_QUERY)
 				.variable("title", "bar").execute()
 				.path("result.title").entity(String.class).isEqualTo("bar")
 				.path("result.todoStatus").entity(TodoStatus.class).isEqualTo(TodoStatus.TODO)
@@ -87,7 +87,7 @@ public class TodoTest {
 	@Test
 	@Order(200)
 	void allTodo() {
-		graphQlTester.query(ALL_TODO_QUERY)
+		graphQlTester.document(ALL_TODO_QUERY)
 				.execute()
 				.path("result[*].id").entityList(Integer.class).isEqualTo(List.of(id1, id2))
 				.path("result[*].title").entityList(String.class).isEqualTo(List.of("foo", "bar"))
@@ -98,13 +98,13 @@ public class TodoTest {
 	@Test
 	@Order(200)
 	void findTodo() {
-		graphQlTester.query(FIND_TODO_QUERY)
+		graphQlTester.document(FIND_TODO_QUERY)
 				.variable("id", id1).execute()
 				.path("result.id").entity(Integer.class).isEqualTo(id1)
 				.path("result.title").entity(String.class).isEqualTo("foo")
 				.path("result.todoStatus").entity(TodoStatus.class).isEqualTo(TodoStatus.TODO);
 
-		graphQlTester.query(FIND_TODO_QUERY)
+		graphQlTester.document(FIND_TODO_QUERY)
 				.variable("id", id2).execute()
 				.path("result.id").entity(Integer.class).isEqualTo(id2)
 				.path("result.title").entity(String.class).isEqualTo("bar")
@@ -119,13 +119,13 @@ public class TodoTest {
 				"title", "fooooooooo",
 				"todoStatus", TodoStatus.DOING);
 
-		graphQlTester.query(UPDATE_TODO_QUERY)
+		graphQlTester.document(UPDATE_TODO_QUERY)
 				.variable("input", input).execute()
 				.path("result.id").entity(Integer.class).isEqualTo(id1)
 				.path("result.title").entity(String.class).isEqualTo("fooooooooo")
 				.path("result.todoStatus").entity(TodoStatus.class).isEqualTo(TodoStatus.DOING);
 
-		graphQlTester.query(FIND_TODO_QUERY)
+		graphQlTester.document(FIND_TODO_QUERY)
 				.variable("id", id1).execute()
 				.path("result.id").entity(Integer.class).isEqualTo(id1)
 				.path("result.title").entity(String.class).isEqualTo("fooooooooo")
@@ -135,19 +135,19 @@ public class TodoTest {
 	@Test
 	@Order(300)
 	void deleteTodo() {
-		graphQlTester.query(DELETE_TODO_QUERY)
+		graphQlTester.document(DELETE_TODO_QUERY)
 				.variable("id", id2).execute()
 				.path("result").entity(Integer.class).isEqualTo(id2);
 
-		graphQlTester.query(FIND_TODO_QUERY)
+		graphQlTester.document(FIND_TODO_QUERY)
 				.variable("id", id2).execute()
-				.path("result").valueDoesNotExist();
+				.path("result").valueIsNull();
 	}
 
 	@Test
 	@Order(400)
 	void createTodoInvalid() {
-		graphQlTester.query(CREATE_TODO_QUERY)
+		graphQlTester.document(CREATE_TODO_QUERY)
 				.variable("title", "1234567890x").execute()
 				.errors()
 				.filter(a -> a.getMessage()
@@ -159,7 +159,7 @@ public class TodoTest {
 	@Test
 	@Order(400)
 	void createTodoBeanValidation() {
-		graphQlTester.query(CREATE_TODO_QUERY)
+		graphQlTester.document(CREATE_TODO_QUERY)
 				.variable("title", "").execute()
 				.errors()
 				.filter(a -> a.getMessage()
