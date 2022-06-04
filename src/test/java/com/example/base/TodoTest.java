@@ -150,9 +150,8 @@ public class TodoTest {
 		graphQlTester.document(CREATE_TODO_QUERY)
 				.variable("title", "1234567890x").execute()
 				.errors()
-				.filter(a -> a.getMessage()
-						//この invalid value : ってなんだ、、、？
-						.equals("invalid value : invalid value : title length must be less than or equal 10"))
+				.expect(a -> a.getMessage()
+						.equals("Variable 'title' has an invalid value: title length must be less than or equal 10"))
 				.verify();
 	}
 
@@ -162,8 +161,8 @@ public class TodoTest {
 		graphQlTester.document(CREATE_TODO_QUERY)
 				.variable("title", "").execute()
 				.errors()
-				.filter(a -> a.getMessage()
-						.equals("createTodo.input.title.value: title length must be greater than or equal 1"))
+				.expect(a -> a.getMessage()
+						.equals("title length must be greater than or equal 1"))
 				.verify();
 	}
 }
