@@ -17,7 +17,7 @@ public class PagingDemoData implements ApplicationRunner {
 	}
 
 	@Override
-	public void run(ApplicationArguments args) throws Exception {
+	public void run(ApplicationArguments args) {
 		commits.save(new Commit("1f1277c", "lombokでjacocoどーすんの問題への対応を試す"));
 		commits.save(new Commit("2f41e23", "JSESSIONIDと異なる名前を使う例"));
 		commits.save(new Commit("0db79a2", "Initial commit"));

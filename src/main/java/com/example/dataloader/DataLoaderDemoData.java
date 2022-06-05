@@ -25,7 +25,7 @@ public class DataLoaderDemoData implements ApplicationRunner {
 	}
 
 	@Override
-	public void run(ApplicationArguments args) throws Exception {
+	public void run(ApplicationArguments args) {
 		Publisher publisher1 = publishers.save(new Publisher("集英社"));
 		Publisher publisher2 = publishers.save(new Publisher("講談社"));
 		Publisher publisher3 = publishers.save(new Publisher("白泉社"));

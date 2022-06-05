@@ -1,0 +1,23 @@
+<FindBugsFilter>
+
+	<!-- 防御的プログラミングめんどい -->
+	<!-- https://spotbugs.readthedocs.io/ja/latest/bugDescriptions.html#ei-ei-expose-rep -->
+	<Match>
+		<Or>
+			<Bug pattern="EI_EXPOSE_REP" />
+			<Bug pattern="EI_EXPOSE_REP2" />
+		</Or>
+	</Match>
+
+	<Match>
+		<Bug pattern="THROWS_METHOD_THROWS_CLAUSE_BASIC_EXCEPTION" />
+		<Or>
+			<Class name="com.example.config.WebSecurityConfig" />
+			<!-- ラムダ式でDataFetcherを定義すると暗黙的にthrows Exceptionしてしまう -->
+			<Class name="com.example.scalarenum.wiring.ScalarEnumDataWiring" />
+			<!-- ラムダ式でDataFetcherを定義すると暗黙的にthrows Exceptionしてしまう -->
+			<Class name="com.example.security.wiring.SecurityInstrumentation" />
+		</Or>
+	</Match>
+</FindBugsFilter>
+

@@ -21,7 +21,7 @@ public class BaseDemoData implements ApplicationRunner {
 	}
 
 	@Override
-	public void run(ApplicationArguments args) throws Exception {
+	public void run(ApplicationArguments args) {
 		Category graphQL = categoryRepository.save(new Category("GraphQL"));
 		Category git = categoryRepository.save(new Category("Git"));
 		Category servlet = categoryRepository.save(new Category("Servlet"));

@@ -17,7 +17,7 @@ public class QueryByExampleDemoData implements ApplicationRunner {
 	}
 
 	@Override
-	public void run(ApplicationArguments args) throws Exception {
+	public void run(ApplicationArguments args) {
 		repos.save(new Tweet(1, "foo", "やあ"));
 		repos.save(new Tweet(2, "bar", "どうも"));
 		repos.save(new Tweet(3, "foo", "ふむふむ"));

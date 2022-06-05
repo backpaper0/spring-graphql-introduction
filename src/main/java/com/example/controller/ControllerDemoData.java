@@ -26,7 +26,7 @@ public class ControllerDemoData implements ApplicationRunner {
 	}
 
 	@Override
-	public void run(ApplicationArguments args) throws Exception {
+	public void run(ApplicationArguments args) {
 
 		Playlist playlist1 = playlistRepository.save(new Playlist("Playlist 1"));
 
