@@ -3,8 +3,6 @@ package com.example.base.controller;
 import java.util.List;
 import java.util.Optional;
 
-import javax.validation.Valid;
-
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Order;
 import org.springframework.graphql.data.method.annotation.Argument;
@@ -15,6 +13,8 @@ import org.springframework.stereotype.Controller;
 import com.example.base.entity.Todo;
 import com.example.base.entity.TodoStatus;
 import com.example.base.repository.TodoRepository;
+
+import jakarta.validation.Valid;
 
 @Controller
 public class TodoController {

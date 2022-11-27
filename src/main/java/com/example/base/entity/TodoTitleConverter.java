@@ -1,7 +1,7 @@
 package com.example.base.entity;
 
-import javax.persistence.AttributeConverter;
-import javax.persistence.Converter;
+import jakarta.persistence.AttributeConverter;
+import jakarta.persistence.Converter;
 
 @Converter(autoApply = true)
 public class TodoTitleConverter implements AttributeConverter<TodoTitle, String> {

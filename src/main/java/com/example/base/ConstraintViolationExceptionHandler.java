@@ -2,14 +2,13 @@ package com.example.base;
 
 import java.util.List;
 
-import javax.validation.ConstraintViolationException;
-
 import org.springframework.graphql.execution.DataFetcherExceptionResolverAdapter;
 import org.springframework.stereotype.Component;
 
 import graphql.GraphQLError;
 import graphql.GraphqlErrorBuilder;
 import graphql.schema.DataFetchingEnvironment;
+import jakarta.validation.ConstraintViolationException;
 
 @Component
 public class ConstraintViolationExceptionHandler extends DataFetcherExceptionResolverAdapter {

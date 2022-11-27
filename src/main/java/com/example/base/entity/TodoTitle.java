@@ -1,9 +1,9 @@
 package com.example.base.entity;
 
-import javax.validation.constraints.Size;
-
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
+
+import jakarta.validation.constraints.Size;
 
 public class TodoTitle {
 

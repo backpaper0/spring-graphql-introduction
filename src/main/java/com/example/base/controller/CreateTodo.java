@@ -1,8 +1,8 @@
 package com.example.base.controller;
 
-import javax.validation.Valid;
-
 import com.example.base.entity.TodoTitle;
+
+import jakarta.validation.Valid;
 
 public class CreateTodo {
 
